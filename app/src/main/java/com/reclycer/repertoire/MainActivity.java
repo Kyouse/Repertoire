@@ -9,8 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
+    @BindView(R.id.list) RecyclerView rv;
     private MyAdapter ma = new MyAdapter();
 
     @Override
@@ -18,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView rv = (RecyclerView) findViewById(R.id.list);
+//        RecyclerView rv = (RecyclerView) findViewById(R.id.list);
+        ButterKnife.bind(this);
         ma.refreshContact(this);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(ma);
