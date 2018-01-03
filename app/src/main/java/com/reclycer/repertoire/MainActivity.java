@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        RecyclerView rv = (RecyclerView) findViewById(R.id.list);
         ButterKnife.bind(this);
         ma.refreshContact(this);
         rv.setLayoutManager(new LinearLayoutManager(this));

@@ -17,22 +17,28 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailContactActivity extends AppCompatActivity {
+    @BindView(R.id.imageView2) ImageView photo;
+    @BindView(R.id.phoneButton) ImageButton phoneButton;
+    @BindView(R.id.smsButton) ImageButton smsButton;
+    @BindView(R.id.nom_detail) TextView nom;
+    @BindView(R.id.prenom_detail) TextView prenom;
+    @BindView(R.id.numero_detail) TextView numero;
+
+
     private Contact currentContact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_contact);
+        ButterKnife.bind(this);
 
         int idContact;
         final Activity activity = this;
-        ImageView photo = (ImageView) findViewById(R.id.imageView2);
-        ImageButton phoneButton = (ImageButton) findViewById(R.id.phoneButton);
-        ImageButton smsButton = (ImageButton) findViewById(R.id.smsButton);
-        TextView nom = (TextView) findViewById(R.id.nom_detail);
-        TextView prenom = (TextView) findViewById(R.id.prenom_detail);
-        TextView numero = (TextView) findViewById(R.id.numero_detail);
 
         Intent intent = getIntent();
         idContact = intent.getIntExtra("ContactID",-1);

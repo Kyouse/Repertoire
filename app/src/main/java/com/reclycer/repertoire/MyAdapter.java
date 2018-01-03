@@ -19,6 +19,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private List<Contact> contact = new ArrayList<>();
@@ -53,17 +56,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView name;
-        private final TextView description;
-        private final ImageView imageView;
+        @BindView(R.id.name) TextView name;
+        @BindView(R.id.description) TextView description;
+        @BindView(R.id.imageView) ImageView imageView;
+
         private Contact currentContact;
 
         public MyViewHolder(final View itemView) {
             super(itemView);
 
-            name = (TextView) itemView.findViewById(R.id.name);
-            description = (TextView) itemView.findViewById(R.id.description);
-            imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,7 +75,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                     itemView.getContext().startActivity(detail_intent);
                 }
             });
-
         }
 
         public void display(Contact personne) {
