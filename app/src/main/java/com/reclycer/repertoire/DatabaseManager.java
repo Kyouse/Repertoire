@@ -82,4 +82,14 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
             Log.e("DATABASE", "Can't delete contact", exception);
         }
     }
+
+    public void updateContact(Contact contact){
+        try {
+            Dao<Contact, Integer> dao = getDao(Contact.class);
+            dao.update(contact);
+        }
+        catch (Exception exception) {
+            Log.e("DATABASE", "Can't update contact", exception);
+        }
+    }
 }

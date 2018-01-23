@@ -9,6 +9,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -56,6 +58,7 @@ public class DetailContactActivity extends AppCompatActivity {
                 photo.setImageURI(Uri.fromFile(new File(currentContact.getPhotoPath())));
         }
 
+
         phoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,5 +81,25 @@ public class DetailContactActivity extends AppCompatActivity {
                         + currentContact.getNumero())));
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail_contact_menu, menu);
+
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.edit:
+                Intent intent = new Intent(this, ModifContact.class);
+                intent.putExtra("IdContact", currentContact.getIdContact());
+                startActivity(intent);
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

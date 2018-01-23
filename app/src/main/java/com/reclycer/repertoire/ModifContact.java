@@ -36,15 +36,21 @@ public class ModifContact extends AppCompatActivity {
     private String tempPhotoPath;
     private String LastPhotoPath;
     private Boolean photoFromApp;
-
+    private Contact currentContact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modif_contact);
 
+        Intent mIntent = getIntent();
+        final int idContact = mIntent.getIntExtra("IdContact", 0);
+
         databaseManager = new DatabaseManager(this);
         final Activity activity = this;
+
+        Log.i("idContact",  String.valueOf(idContact));
+        currentContact = databaseManager.getContact(idContact);
 
         prenom = (EditText) findViewById(R.id.modif_first_name);
         nom = (EditText) findViewById(R.id.modif_Name);
@@ -54,6 +60,11 @@ public class ModifContact extends AppCompatActivity {
         takepic = (Button) findViewById(R.id.modif_takepicbutton);
         importpic = (Button) findViewById(R.id.modif_importbutton);
         photoFromApp = false;
+
+        prenom.setText(currentContact.getPrenom());
+        nom.setText(currentContact.getNom());
+        numero.setText(currentContact.getNumero());
+
 
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,22 +84,23 @@ public class ModifContact extends AppCompatActivity {
                     return;
                 }
 
-                Contact contact = new Contact(
-                        nom.getText().toString(),
-                        prenom.getText().toString(),
-                        numero.getText().toString()
+                currentContact.setPrenom(prenom.getText().toString());
+                currentContact.setNom(nom.getText().toString());
+                currentContact.setNumero(numero.getText().toString());
 
-                );
+                if (LastPhotoPath != null) {
+                    if (currentContact.getisPhotoFromApp()) {
+                        File mydir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                        File myImage = new File(mydir, currentContact.getPhotoPath());
+                        myImage.delete();
+                    }
+                    currentContact.setPhotoPath(LastPhotoPath);
+                    currentContact.setisPhotoFromApp(photoFromApp);
+                }
 
-                if (LastPhotoPath != null)
-                    contact.setPhotoPath(LastPhotoPath);
-                contact.setisPhotoFromApp(photoFromApp);
-
-                databaseManager.insertContact(contact);
+                databaseManager.updateContact(currentContact);
                 databaseManager.close();
 
-                Intent resultIntent = new Intent();
-                setResult(Activity.RESULT_OK, resultIntent);
                 finish();
             }
         });

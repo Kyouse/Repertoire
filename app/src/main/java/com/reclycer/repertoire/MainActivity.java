@@ -71,4 +71,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
- }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ma.refreshContact(this);
+    }
+}
