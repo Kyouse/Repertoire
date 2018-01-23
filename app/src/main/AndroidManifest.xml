@@ -38,7 +38,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".DetailContactActivity"></activity>
+        <activity android:name=".DetailContactActivity" />
+        <activity android:name=".ModifContact"></activity>
     </application>
 
 </manifest>

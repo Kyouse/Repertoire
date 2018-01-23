@@ -20,15 +20,16 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile( 'com.jakewharton:butterknife:8.8.1', {
+    compile('com.jakewharton:butterknife:8.8.1', {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'support-compat'
     })
-    annotationProcessor( 'com.jakewharton:butterknife-compiler:8.8.1', {
+    annotationProcessor('com.jakewharton:butterknife-compiler:8.8.1', {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'support-compat'
     })
