@@ -2,7 +2,6 @@ package com.reclycer.repertoire;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -22,14 +21,10 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-/**
- * Created by kyouse on 18/11/16.
- */
 
 public class AjoutContact extends AppCompatActivity {
     private EditText prenom, nom, numero;
@@ -133,7 +128,7 @@ public class AjoutContact extends AppCompatActivity {
                     ActivityCompat.requestPermissions(activity, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, PERMS_CALL_ID);
                 }
                 else
-                startActivityForResult(import_intent, REQUEST_LOAD_IMAGE);
+                    startActivityForResult(import_intent, REQUEST_LOAD_IMAGE);
             }
 
         });
