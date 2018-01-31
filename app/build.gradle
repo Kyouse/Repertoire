@@ -1,4 +1,10 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
+androidExtensions {
+    experimental = true
+}
 
 android {
     compileSdkVersion 24
@@ -39,4 +45,9 @@ dependencies {
     compile 'com.android.support:cardview-v7:24.2.0'
     compile files('libs/ormlite-android-5.0.jar')
     compile files('libs/ormlite-core-5.0.jar')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile 'com.github.bumptech.glide:glide:3.8.0'
+}
+repositories {
+    mavenCentral()
 }
