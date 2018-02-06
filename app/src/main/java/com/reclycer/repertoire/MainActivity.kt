@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 
 import butterknife.ButterKnife
+import com.reclycer.repertoire.data.DataManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -24,6 +25,9 @@ class MainActivity : AppCompatActivity() {
         ma.refreshContact(this)
         contact_list.layoutManager = LinearLayoutManager(this)
         contact_list.adapter = ma
+
+        val datamanager = DataManager()
+        datamanager.refresh()
 
     }
 
