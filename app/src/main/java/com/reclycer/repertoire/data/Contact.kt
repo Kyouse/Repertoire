@@ -23,9 +23,11 @@ class Contact {
     var photoPath: String? = null
     @DatabaseField
     private var isPhotoFromApp: Boolean? = null
+    @DatabaseField(columnName = COLUMN_NAME_SYNC_ID)
+    var sync_id: String? = null
 
 
-    constructor(nom: String, prenom: String, numero: String) {
+    constructor(nom: String, prenom: String, numero: String?) {
         this.nom = nom
         this.prenom = prenom
         this.numero = numero
@@ -39,5 +41,9 @@ class Contact {
 
     fun setisPhotoFromApp(isPhotoFromApp: Boolean?) {
         this.isPhotoFromApp = isPhotoFromApp
+    }
+
+    companion object {
+        const val COLUMN_NAME_SYNC_ID="SYNC_ID"
     }
 }

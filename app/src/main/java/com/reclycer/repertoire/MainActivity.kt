@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         contact_list.layoutManager = LinearLayoutManager(this)
         contact_list.adapter = ma
 
-        val datamanager = DataManager()
+        val datamanager = DataManager(this)
         datamanager.refresh()
 
     }

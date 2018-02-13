@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import com.reclycer.repertoire.data.Contact
+import com.reclycer.repertoire.data.DataManager
 
 
 class AjoutContact : AppCompatActivity() {
@@ -85,6 +86,10 @@ class AjoutContact : AppCompatActivity() {
 
             databaseManager!!.insertContact(contact)
             databaseManager!!.close()
+
+            val dataManager = DataManager(this)
+            dataManager.createContact(contact)
+
 
             val resultIntent = Intent()
             setResult(Activity.RESULT_OK, resultIntent)

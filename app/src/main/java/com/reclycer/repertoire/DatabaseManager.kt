@@ -15,7 +15,7 @@ import com.reclycer.repertoire.data.Contact
  * Created by kyouse on 05/12/17.
  */
 
-class DatabaseManager(context: Context) : OrmLiteSqliteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : OrmLiteSqliteOpenHelper(context, databaseName, null, DATABASE_VERSION) {
 
     override fun onCreate(sqLiteDatabase: SQLiteDatabase, connectionSource: ConnectionSource) {
         try {
@@ -24,7 +24,6 @@ class DatabaseManager(context: Context) : OrmLiteSqliteOpenHelper(context, DATAB
         } catch (exception: Exception) {
             Log.e("DATABASE", "Can't create database", exception)
         }
-
     }
 
     override fun onUpgrade(sqLiteDatabase: SQLiteDatabase, connectionSource: ConnectionSource, oldVersion: Int, newVersion: Int) {
@@ -62,7 +61,6 @@ class DatabaseManager(context: Context) : OrmLiteSqliteOpenHelper(context, DATAB
             Log.e("DATABASE", "Can't get contact", exception)
             return null
         }
-
     }
 
     fun deleteContact(id: Int) {
@@ -83,12 +81,27 @@ class DatabaseManager(context: Context) : OrmLiteSqliteOpenHelper(context, DATAB
         } catch (exception: Exception) {
             Log.e("DATABASE", "Can't update contact", exception)
         }
+    }
 
+
+    fun getContact(sync_id: String): Contact? {
+        try {
+
+            val dao = getDao<Dao<Contact, Int>, Contact>(Contact::class.java)
+            val queryBuilder = dao.queryBuilder()
+            queryBuilder.where().eq(Contact.COLUMN_NAME_SYNC_ID, sync_id)
+            return queryBuilder.queryForFirst()
+        } catch (exception: Exception) {
+            Log.e("DATABASE", "Can't get contact", exception)
+            return null
+        }
     }
 
     companion object {
 
         private val DATABASE_NAME = "Repertoire.db"
         private val DATABASE_VERSION = 1
+        val SYNC_DATABASE = "synchronised_contacts.db"
+
     }
 }

@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import com.reclycer.repertoire.data.Contact
+import com.reclycer.repertoire.data.DataManager
 
 class ModifContact : AppCompatActivity() {
     private var prenom: EditText? = null
@@ -101,6 +102,9 @@ class ModifContact : AppCompatActivity() {
 
             databaseManager!!.updateContact(currentContact)
             databaseManager!!.close()
+
+            val dataManager = DataManager(this)
+            dataManager.updateContact(currentContact)
 
             finish()
         })
