@@ -42,7 +42,8 @@ class DataManager(context: Context) {
                                     }
                                     else{
                                         dbContact.prenom = apiContact.first_name
-                                        //todo RAjouter les champs manquant
+                                        dbContact.nom = apiContact.last_name
+                                        dbContact.numero = apiContact.phone_number
                                         databaseManager.updateContact(dbContact)
                                     }
                                 }
