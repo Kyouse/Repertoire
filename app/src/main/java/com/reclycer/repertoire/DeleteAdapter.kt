@@ -1,10 +1,7 @@
 package com.reclycer.repertoire
 
 import android.content.Context
-import android.net.Uri
-import android.os.Environment
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +14,7 @@ import java.io.File
 import java.util.ArrayList
 
 import com.reclycer.repertoire.data.Contact
+import com.reclycer.repertoire.data.DataManager
 
 /**
  * Created by kyouse on 03/12/17.
@@ -24,33 +22,33 @@ import com.reclycer.repertoire.data.Contact
 
 class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
 
-    private var contact: List<Contact>? = ArrayList()
-    private val list_idContact = ArrayList<Int>()
-
-    fun deleteContact(context: Context) {
-        val databaseManager = DatabaseManager(context)
-        for (i in list_idContact) {
-            for (c in contact!!) {
-                if (i == c.idContact && c.getisPhotoFromApp()!!) {
-                    val mydir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                    val myImage = File(mydir, c.photoPath!!)
-                    myImage.delete()
-                    Log.i("DeleteAdapter", "Image : " + c.photoPath!!)
-                }
-            }
-            databaseManager.deleteContact(i)
-        }
-        databaseManager.close()
-    }
+    private var contactList: List<Contact>? = ArrayList()
+    private val listIdsToRemove = ArrayList<Int>()
+//
+//    fun deleteContact(context: Context) {
+//        val databaseManager = DatabaseManager(context)
+//        for (i in listIdsToRemove) {
+//            for (c in contactList!!) {
+//                if (i == c.idContact && c.getisPhotoFromApp()!!) {
+//                    val mydir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+//                    val myImage = File(mydir, c.photoPath!!)
+//                    myImage.delete()
+//                    Log.i("DeleteAdapter", "Image : " + c.photoPath!!)
+//                }
+//            }
+//            databaseManager.deleteContact(i)
+//        }
+//        databaseManager.close()
+//    }
 
     fun refreshContact(context: Context) {
         val databaseManager = DatabaseManager(context)
-        contact = databaseManager.readContact()
+        contactList = databaseManager.readContact()
         notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        return contact!!.size
+        return contactList!!.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeleteAdapter.MyViewHolder {
@@ -60,7 +58,7 @@ class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: DeleteAdapter.MyViewHolder, position: Int) {
-        val fouet = contact!![position]
+        val fouet = contactList!![position]
         holder.display(fouet)
     }
 
@@ -82,10 +80,10 @@ class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
             itemView.setOnClickListener {
                 if (checkBox.isChecked) {
                     checkBox.isChecked = false
-                    list_idContact.remove(Integer.valueOf(currentContact!!.idContact))
+                    listIdsToRemove.remove(Integer.valueOf(currentContact!!.idContact))
                 } else {
                     checkBox.isChecked = true
-                    list_idContact.add(currentContact!!.idContact)
+                    listIdsToRemove.add(currentContact!!.idContact)
                 }
             }
 
@@ -105,5 +103,21 @@ class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
                             .into(imageView);
             }
         }
+    }
+
+    fun markToDelete(context: Context) {
+        val dataManager = DataManager(context)
+        val databaseManager = DatabaseManager(context)
+        for (id in listIdsToRemove) {
+//            for (c in contactList!!) {
+//                if (i == c.idContact) {
+//
+//                }
+//            }
+            databaseManager.markToDelete(id)
+            dataManager.deleteApiContact(id)
+        }
+
+        databaseManager.close()
     }
 }

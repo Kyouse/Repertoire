@@ -104,4 +104,16 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
         val SYNC_DATABASE = "synchronised_contacts.db"
 
     }
+
+    fun markToDelete(id: Int) {
+        try {
+            val dao = getDao<Dao<Contact, Int>, Contact>(Contact::class.java)
+            val contact = dao.queryForId(id)
+            contact.to_delete = true
+            dao.update(contact)
+            Log.i("DATABASE", "markToDelete invoked")
+        } catch (exception: Exception) {
+            Log.e("DATABASE", "Can't delete contact", exception)
+        }
+    }
 }

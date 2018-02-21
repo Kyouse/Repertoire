@@ -3,6 +3,7 @@ package com.reclycer.repertoire.data
 import android.content.Context
 import android.util.Log
 import com.reclycer.repertoire.DatabaseManager
+import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -56,7 +57,6 @@ class DataManager(context: Context) {
 
                     override fun onError(e: Throwable?) {
                         Log.i("DataManager", "Failed to subscribe")
-
                     }
                 })
     }
@@ -104,6 +104,31 @@ class DataManager(context: Context) {
                         Log.e("DataManager", "Failed to update")
                     }
                 })
+    }
+
+    fun deleteApiContact(id: Int) {
+        val contactToDelete  = databaseManager.getContact(id)
+        contactService.deleteContact(contactToDelete!!.sync_id!!)
+                .subscribeOn(Schedulers.io()) // Executer sur le thread io
+                .observeOn(Schedulers.io())
+                .subscribe(object:CompletableObserver{
+                    override fun onComplete() {
+                         databaseManager.deleteContact(id)
+                        Log.i("DataManager", "Success to delete contact")
+
+                    }
+
+                    override fun onSubscribe(d: Disposable?) {
+
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        Log.e("DataManager", "Failed to delete")
+                    }
+
+
+                })
+
     }
 }
 

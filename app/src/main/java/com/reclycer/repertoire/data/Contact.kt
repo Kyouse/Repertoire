@@ -25,6 +25,9 @@ class Contact {
     private var isPhotoFromApp: Boolean? = null
     @DatabaseField(columnName = COLUMN_NAME_SYNC_ID)
     var sync_id: String? = null
+    @DatabaseField
+    var to_delete: Boolean? = false
+
 
 
     constructor(nom: String, prenom: String, numero: String?) {

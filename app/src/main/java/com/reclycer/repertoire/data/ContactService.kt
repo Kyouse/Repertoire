@@ -1,5 +1,6 @@
 package com.reclycer.repertoire.data
 
+import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.*
 
@@ -27,5 +28,8 @@ interface ContactService {
                       @Field("first_name") first_name: String,
                       @Field("last_name") last_name: String,
                       @Field("phone_number") phone_number: String) : Single<ApiContact>
+
+    @DELETE("contact/{id}")
+    fun deleteContact(@Path("id") _id: String): Completable
 
 }
