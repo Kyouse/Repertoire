@@ -1,7 +1,6 @@
-package com.reclycer.repertoire
+package com.reclycer.repertoire.ui
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -11,13 +10,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 
 import java.io.File
 import com.bumptech.glide.Glide
+import com.reclycer.repertoire.R
 import com.reclycer.repertoire.data.Contact
+import com.reclycer.repertoire.data.DatabaseManager
 import kotlinx.android.synthetic.main.activity_detail_contact.*
 
 class DetailContactActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.reclycer.repertoire
+package com.reclycer.repertoire.ui
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -9,12 +9,14 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.reclycer.repertoire.R
 
 import java.io.File
 import java.util.ArrayList
 
 import com.reclycer.repertoire.data.Contact
 import com.reclycer.repertoire.data.DataManager
+import com.reclycer.repertoire.data.DatabaseManager
 
 /**
  * Created by kyouse on 03/12/17.
@@ -36,13 +38,13 @@ class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
         return contactList!!.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeleteAdapter.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.todelete, parent, false)
         return MyViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: DeleteAdapter.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val fouet = contactList!![position]
         holder.display(fouet)
     }

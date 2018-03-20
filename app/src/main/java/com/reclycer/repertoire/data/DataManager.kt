@@ -2,7 +2,6 @@ package com.reclycer.repertoire.data
 
 import android.content.Context
 import android.util.Log
-import com.reclycer.repertoire.DatabaseManager
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
 import io.reactivex.SingleObserver

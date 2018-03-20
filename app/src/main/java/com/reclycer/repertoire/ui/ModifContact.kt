@@ -1,10 +1,9 @@
-package com.reclycer.repertoire
+package com.reclycer.repertoire.ui
 
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -19,6 +18,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.reclycer.repertoire.R
 
 import java.io.File
 import java.io.IOException
@@ -27,6 +27,7 @@ import java.util.Date
 
 import com.reclycer.repertoire.data.Contact
 import com.reclycer.repertoire.data.DataManager
+import com.reclycer.repertoire.data.DatabaseManager
 
 class ModifContact : AppCompatActivity() {
     private var prenom: EditText? = null

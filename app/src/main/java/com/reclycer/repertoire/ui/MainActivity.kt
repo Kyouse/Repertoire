@@ -1,4 +1,4 @@
-package com.reclycer.repertoire
+package com.reclycer.repertoire.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -8,9 +8,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.reclycer.repertoire.R
 
 import com.reclycer.repertoire.data.ContactService
 import com.reclycer.repertoire.data.DataManager
+import com.reclycer.repertoire.data.DatabaseManager
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

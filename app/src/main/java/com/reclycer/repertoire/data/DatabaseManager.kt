@@ -1,4 +1,4 @@
-package com.reclycer.repertoire
+package com.reclycer.repertoire.data
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -8,8 +8,6 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper
 import com.j256.ormlite.dao.Dao
 import com.j256.ormlite.support.ConnectionSource
 import com.j256.ormlite.table.TableUtils
-
-import com.reclycer.repertoire.data.Contact
 
 /**
  * Created by kyouse on 05/12/17.

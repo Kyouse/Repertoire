@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,8 +28,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AjoutContact" />
-        <activity android:name=".DeleteActivity" />
+        <activity android:name=".ui.AjoutContact" />
+        <activity android:name=".ui.DeleteActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -41,8 +41,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".DetailContactActivity" />
-        <activity android:name=".ModifContact"></activity>
+        <activity android:name=".ui.DetailContactActivity" />
+        <activity android:name=".ui.ModifContact"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.reclycer.repertoire
+package com.reclycer.repertoire.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import com.reclycer.repertoire.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class DeleteActivity : AppCompatActivity() {
