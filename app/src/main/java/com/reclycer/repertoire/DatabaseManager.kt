@@ -40,7 +40,7 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
 
     }
 
-    fun readContact(): List<Contact>? {
+    fun readContactList(): List<Contact>? {
         try {
             val dao = getDao<Dao<Contact, Int>, Contact>(Contact::class.java)
             val list_contact = dao.queryForAll()

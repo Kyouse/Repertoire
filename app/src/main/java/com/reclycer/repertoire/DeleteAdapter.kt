@@ -24,26 +24,11 @@ class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
 
     private var contactList: List<Contact>? = ArrayList()
     private val listIdsToRemove = ArrayList<Int>()
-//
-//    fun deleteContact(context: Context) {
-//        val databaseManager = DatabaseManager(context)
-//        for (i in listIdsToRemove) {
-//            for (c in contactList!!) {
-//                if (i == c.idContact && c.getisPhotoFromApp()!!) {
-//                    val mydir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-//                    val myImage = File(mydir, c.photoPath!!)
-//                    myImage.delete()
-//                    Log.i("DeleteAdapter", "Image : " + c.photoPath!!)
-//                }
-//            }
-//            databaseManager.deleteContact(i)
-//        }
-//        databaseManager.close()
-//    }
+
 
     fun refreshContact(context: Context) {
         val databaseManager = DatabaseManager(context)
-        contactList = databaseManager.readContact()
+        contactList = databaseManager.readContactList()
         notifyDataSetChanged()
     }
 

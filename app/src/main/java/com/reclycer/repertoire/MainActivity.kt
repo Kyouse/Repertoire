@@ -19,22 +19,33 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val myAdapter = MyAdapter()
+    lateinit var datamanager: DataManager
+    lateinit var databasemanager: DatabaseManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-        myAdapter.refreshContact(this)
+
         contact_list.layoutManager = LinearLayoutManager(this)
         contact_list.adapter = myAdapter
 
-        val datamanager = DataManager(this)
-        refresh(datamanager)
+        databasemanager = DatabaseManager(this)
+        displayUpdatedContent()
 
+        datamanager = DataManager(this)
+
+        refresh(datamanager)
         swipeRefresh.setOnRefreshListener { refresh(datamanager)
         }
 
+    }
+
+    private fun displayUpdatedContent() {
+        myAdapter.contactList.clear()
+        myAdapter.contactList.addAll(databasemanager.readContactList()!!.toList())
+        myAdapter.notifyDataSetChanged()
     }
 
     private fun refresh(datamanager: DataManager) {
@@ -43,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                 .subscribe(object : SingleObserver<List<ContactService.ApiContact>> {
             override fun onSuccess(contactList: List<ContactService.ApiContact>) {
                 swipeRefresh.isRefreshing = false
-                myAdapter.refreshContact(this@MainActivity)
+                displayUpdatedContent()
             }
 
             override fun onSubscribe(d: Disposable?) {
@@ -84,14 +95,9 @@ class MainActivity : AppCompatActivity() {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            1 -> {
+            1,2 -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    myAdapter.refreshContact(this)
-                }
-            }
-            2 -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    myAdapter.refreshContact(this)
+                    displayUpdatedContent()
                 }
             }
         }
@@ -99,7 +105,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        refresh(datamanager)
 
-        myAdapter.refreshContact(this)
     }
 }

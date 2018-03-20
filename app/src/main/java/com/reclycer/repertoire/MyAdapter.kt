@@ -4,7 +4,6 @@ package com.reclycer.repertoire
  * Created by kyouse on 14/11/16.
  */
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
@@ -21,18 +20,12 @@ import kotlinx.android.synthetic.main.list_cell.*
 
 class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
-    private var contact: List<Contact>? = ArrayList()
-    private var databaseManager: DatabaseManager? = null
+    val contactList: MutableList<Contact> = ArrayList()
 
-    fun refreshContact(context: Context) {
-        databaseManager = DatabaseManager(context)
-        contact = databaseManager!!.readContact()
-        notifyDataSetChanged()
-    }
 
     override fun getItemCount(): Int {
-        return if (contact != null)
-            contact!!.size
+        return if (contactList != null)
+            contactList!!.size
         else
             0
     }
@@ -44,7 +37,7 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val fouet = contact!![position]
+        val fouet = contactList!![position]
         holder.display(fouet)
     }
 
