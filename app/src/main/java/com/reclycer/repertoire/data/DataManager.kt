@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.reclycer.repertoire.DatabaseManager
 import io.reactivex.CompletableObserver
+import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -26,39 +27,39 @@ class DataManager(context: Context) {
 
     val contactService = retrofit.create(ContactService::class.java)
 
-    fun refresh(){
-        contactService.getContactList()
+    fun refresh(): Single<List<ContactService.ApiContact>> {
+        return        contactService.getContactList()
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
-                .observeOn(Schedulers.io()) // FIXME Revenir sur le main thread
-                //      .subscribe{ list -> Log.d("LIST","$list")}
-                .subscribe(object:SingleObserver<List<ContactService.ApiContact>>{
-                    override fun onSuccess(contactList: List<ContactService.ApiContact>) {
-                        contactList
-                                .filter { !it.first_name.isNullOrEmpty() && !it.last_name.isNullOrEmpty()  }
-                                .forEach {
-                                    val apiContact = it
-                                    val dbContact = databaseManager.getContact(apiContact._id!!)
-                                    if(dbContact == null) {
-                                        databaseManager.insertContact(apiContact.toDBContact())
-                                    }
-                                    else{
-                                        dbContact.prenom = apiContact.first_name
-                                        dbContact.nom = apiContact.last_name
-                                        dbContact.numero = apiContact.phone_number
-                                        databaseManager.updateContact(dbContact)
-                                    }
+                .doOnSuccess {
+                    it.filter { !it.first_name.isNullOrEmpty() && !it.last_name.isNullOrEmpty() }
+                            .forEach {
+                                val apiContact = it
+                                val dbContact = databaseManager.getContact(apiContact._id!!)
+                                if (dbContact == null) {
+                                    databaseManager.insertContact(apiContact.toDBContact())
+                                } else {
+                                    dbContact.prenom = apiContact.first_name
+                                    dbContact.nom = apiContact.last_name
+                                    dbContact.numero = apiContact.phone_number
+                                    databaseManager.updateContact(dbContact)
                                 }
+                            }
 
-                        Log.i("DataManager", "Success to list contact $contactList")
-                    }
+                    Log.i("DataManager", "Success to list contact $it")
 
-                    override fun onSubscribe(d: Disposable?) {
-                    }
+                }
+//                .subscribe(object:SingleObserver<List<ContactService.ApiContact>>{
+//                    override fun onSuccess(contactList: List<ContactService.ApiContact>) {
+//
+//                    }
+//
+//                    override fun onSubscribe(d: Disposable?) {
+//                    }
+//
+//                    override fun onError(e: Throwable?) {
+//                        Log.i("DataManager", "Failed to subscribe")
+//
 
-                    override fun onError(e: Throwable?) {
-                        Log.i("DataManager", "Failed to subscribe")
-                    }
-                })
     }
 
     fun createContact(contact: Contact) {
@@ -113,7 +114,7 @@ class DataManager(context: Context) {
                 .observeOn(Schedulers.io())
                 .subscribe(object:CompletableObserver{
                     override fun onComplete() {
-                         databaseManager.deleteContact(id)
+                        databaseManager.deleteContact(id)
                         Log.i("DataManager", "Success to delete contact")
 
                     }

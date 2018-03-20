@@ -16,9 +16,6 @@ import android.widget.ImageView
 import android.widget.TextView
 
 import java.io.File
-
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.bumptech.glide.Glide
 import com.reclycer.repertoire.data.Contact
 import kotlinx.android.synthetic.main.activity_detail_contact.*
