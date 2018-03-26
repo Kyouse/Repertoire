@@ -24,15 +24,15 @@ import com.reclycer.repertoire.data.DatabaseManager
 
 class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
 
-    private var contactList: List<Contact>? = ArrayList()
-    private val listIdsToRemove = ArrayList<Int>()
+    val contactList: MutableList<Contact>? = ArrayList()
+    val listIdsToRemove = ArrayList<Int>()
 
 
-    fun refreshContact(context: Context) {
-        val databaseManager = DatabaseManager(context)
-        contactList = databaseManager.readContactList()
-        notifyDataSetChanged()
-    }
+//    fun refreshContact(context: Context) {
+//        val databaseManager = DatabaseManager(context)
+//        contactList = databaseManager.readContactList()
+//        notifyDataSetChanged()
+//    }
 
     override fun getItemCount(): Int {
         return contactList!!.size
@@ -92,19 +92,14 @@ class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
         }
     }
 
-    fun markToDelete(context: Context) {
-        val dataManager = DataManager(context)
-        val databaseManager = DatabaseManager(context)
-        for (id in listIdsToRemove) {
-//            for (c in contactList!!) {
-//                if (i == c.idContact) {
+//    fun markToDelete(context: Context) {
+//        val dataManager = DataManager(context)
+//        val databaseManager = DatabaseManager(context)
+//        for (id in listIdsToRemove) {
+//            databaseManager.markToDelete(id)
+//            dataManager.deleteApiContact(id)
+//        }
 //
-//                }
-//            }
-            databaseManager.markToDelete(id)
-            dataManager.deleteApiContact(id)
-        }
-
-        databaseManager.close()
-    }
+//        databaseManager.close()
+//    }
 }

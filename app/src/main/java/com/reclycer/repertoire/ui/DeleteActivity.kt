@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import com.reclycer.repertoire.R
+import com.reclycer.repertoire.data.DataManager
+import com.reclycer.repertoire.data.DatabaseManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class DeleteActivity : AppCompatActivity() {
@@ -20,10 +22,15 @@ class DeleteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
+//
+//        deleteAdapter.refreshContact(this)
 
-        deleteAdapter.refreshContact(this)
+        val databaseManager = DatabaseManager(this)
+        deleteAdapter.contactList?.addAll(databaseManager.readContactList()!!.toList())
+        deleteAdapter.notifyDataSetChanged()
         contact_list.layoutManager = LinearLayoutManager(this)
         contact_list.adapter = deleteAdapter
+        databaseManager.close()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -36,9 +43,16 @@ class DeleteActivity : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.Delete_final -> {
-                deleteAdapter.markToDelete(this)
-//                deleteAdapter.deleteContact(this)
+//                deleteAdapter.markToDelete(this)
 
+                val dataManager = DataManager(this)
+                val databaseManager = DatabaseManager(this)
+                    for (id in deleteAdapter.listIdsToRemove) {
+                        databaseManager.markToDelete(id)
+                        dataManager.deleteApiContact(id)
+                    }
+
+                databaseManager.close()
 
                 val resultIntent = Intent()
                 setResult(Activity.RESULT_OK, resultIntent)
