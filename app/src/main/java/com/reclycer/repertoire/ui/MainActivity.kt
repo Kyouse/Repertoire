@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         datamanager = DataManager(this)
 
-        refresh(datamanager)
+
         swipeRefresh.setOnRefreshListener { refresh(datamanager)
         }
 

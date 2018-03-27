@@ -71,6 +71,9 @@ class DataManager(context: Context) {
                     override fun onSuccess(apiContact: ContactService.ApiContact) {
                         databaseManager.insertContact(apiContact.toDBContact())
                         Log.i("DataManager", "Success to create contact: $apiContact")
+
+                        databaseManager.deleteContact(contact.idContact)
+                        Log.i("DataManager", "Success to delete local contact: $apiContact")
                     }
 
                     override fun onSubscribe(d: Disposable?) {
