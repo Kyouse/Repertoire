@@ -76,7 +76,6 @@ class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
             if (currentContact!!.photoPath != null) {
                 val file = File(currentContact!!.photoPath!!)
                 if (file.exists())
-                // imageView.setImageURI(Uri.fromFile(File(currentContact!!.photoPath!!)))
                     Glide.with(name.context)
                             .load(currentContact!!.photoPath!!)
                             .centerCrop()

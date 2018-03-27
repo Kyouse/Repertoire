@@ -47,17 +47,7 @@ class DataManager(context: Context) {
                     Log.i("DataManager", "Success to list contact $it")
 
                 }
-//                .subscribe(object:SingleObserver<List<ContactService.ApiContact>>{
-//                    override fun onSuccess(contactList: List<ContactService.ApiContact>) {
-//
-//                    }
-//
-//                    override fun onSubscribe(d: Disposable?) {
-//                    }
-//
-//                    override fun onError(e: Throwable?) {
-//                        Log.i("DataManager", "Failed to subscribe")
-//
+
 
     }
 
@@ -66,7 +56,6 @@ class DataManager(context: Context) {
         contactService.createContact(contact.prenom!!, contact.nom!!, contact.numero!!)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .observeOn(Schedulers.io()) // FIXME Revenir sur le main thread
-                //      .subscribe{ list -> Log.d("LIST","$list")}
                 .subscribe(object:SingleObserver<ContactService.ApiContact>{
                     override fun onSuccess(apiContact: ContactService.ApiContact) {
                         databaseManager.insertContact(apiContact.toDBContact())
