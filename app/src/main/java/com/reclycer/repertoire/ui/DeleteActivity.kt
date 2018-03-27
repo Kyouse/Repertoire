@@ -20,22 +20,21 @@ class DeleteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-//
-//        deleteAdapter.refreshContact(this)
-
-        val databaseManager = DatabaseManager(this)
-        deleteAdapter.contactList?.addAll(databaseManager.readContactList()!!.toList())
-        deleteAdapter.notifyDataSetChanged()
         contact_list.layoutManager = LinearLayoutManager(this)
         contact_list.adapter = deleteAdapter
+
+        loadData()
+    }
+
+    private fun loadData() {
+        val databaseManager = DatabaseManager(this)
+        deleteAdapter.contactList.addAll(databaseManager.readContactList()!!.toList())
+        deleteAdapter.notifyDataSetChanged()
         databaseManager.close()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.delete_menu, menu)
-
         return true
     }
 
@@ -43,15 +42,13 @@ class DeleteActivity : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.Delete_final -> {
-//                deleteAdapter.markToDelete(this)
 
                 val dataManager = DataManager(this)
                 val databaseManager = DatabaseManager(this)
-                    for (id in deleteAdapter.listIdsToRemove) {
-                        databaseManager.markToDelete(id)
-                        dataManager.deleteApiContact(id)
-                    }
-
+                for (id in deleteAdapter.listIdsToRemove) {
+                    databaseManager.markToDelete(id)
+                    dataManager.deleteApiContact(id)
+                }
                 databaseManager.close()
 
                 val resultIntent = Intent()

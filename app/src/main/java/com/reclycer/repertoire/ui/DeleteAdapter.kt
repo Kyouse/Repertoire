@@ -24,18 +24,12 @@ import com.reclycer.repertoire.data.DatabaseManager
 
 class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
 
-    val contactList: MutableList<Contact>? = ArrayList()
+    val contactList: MutableList<Contact> = ArrayList()
     val listIdsToRemove = ArrayList<Int>()
 
 
-//    fun refreshContact(context: Context) {
-//        val databaseManager = DatabaseManager(context)
-//        contactList = databaseManager.readContactList()
-//        notifyDataSetChanged()
-//    }
-
     override fun getItemCount(): Int {
-        return contactList!!.size
+        return contactList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -45,9 +39,9 @@ class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val fouet = contactList!![position]
-        holder.display(fouet)
+        holder.display(contactList[position])
     }
+
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -73,7 +67,6 @@ class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
                     listIdsToRemove.add(currentContact!!.idContact)
                 }
             }
-
         }
 
         fun display(personne: Contact) {
@@ -91,15 +84,4 @@ class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
             }
         }
     }
-
-//    fun markToDelete(context: Context) {
-//        val dataManager = DataManager(context)
-//        val databaseManager = DatabaseManager(context)
-//        for (id in listIdsToRemove) {
-//            databaseManager.markToDelete(id)
-//            dataManager.deleteApiContact(id)
-//        }
-//
-//        databaseManager.close()
-//    }
 }
