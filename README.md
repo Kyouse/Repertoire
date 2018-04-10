@@ -4,4 +4,5 @@ Répertoire de contacts
 
 ## TODO
 
-Fix DeleteActivity, Close l'activité avant la fin de l'exécution.
+etendre la strategie de progressbar et de RX subscribe dans l'activite a update et delete si possible
+trouver de belles icones

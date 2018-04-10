@@ -44,7 +44,7 @@ class DetailContactActivity : AppCompatActivity() {
         currentContact = databaseManager.getContact(idContact)
         databaseManager.close()
 
-        nom_detail!!.text = currentContact!!.nom
+            nom_detail!!.text = currentContact!!.nom
         prenom_detail!!.text = currentContact!!.prenom
         numero_detail!!.text = currentContact!!.numero
         if (currentContact!!.photoPath != null) {

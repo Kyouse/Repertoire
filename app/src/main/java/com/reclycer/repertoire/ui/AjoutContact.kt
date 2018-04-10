@@ -12,11 +12,10 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import com.reclycer.repertoire.R
 
 import java.io.File
@@ -62,89 +61,129 @@ class AjoutContact : AppCompatActivity() {
         photoFromApp = false
 
         valider!!.setOnClickListener(View.OnClickListener { view ->
-            if (prenom!!.text.isEmpty()) {
-                Toast.makeText(view.context, "Vous n'avez pas écrit le prénom", Toast.LENGTH_SHORT).show()
-                return@OnClickListener
-            }
-
-            if (nom!!.text.isEmpty()) {
-                Toast.makeText(view.context, "Vous n'avez pas écrit le nom", Toast.LENGTH_SHORT).show()
-                return@OnClickListener
-            }
-
-            if (numero!!.text.toString().trim { it <= ' ' }.length < 3) {
-                Toast.makeText(view.context, "Le numéro doit être composé au minimum de 3 chiffres", Toast.LENGTH_SHORT).show()
-                return@OnClickListener
-            }
-
-            val contact = Contact(
-                    nom!!.text.toString(),
-                    prenom!!.text.toString(),
-                    numero!!.text.toString()
-
-            )
-
-            if (LastPhotoPath != null)
-                contact.photoPath = LastPhotoPath
-            contact.setisPhotoFromApp(photoFromApp)
-
-            databaseManager!!.insertContact(contact)
-            databaseManager!!.close()
-
-            val dataManager = DataManager(this)
-            dataManager.createContact(contact)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : CompletableObserver {
-                        override fun onComplete() {
-                            val resultIntent = Intent()
-                            setResult(Activity.RESULT_OK, resultIntent)
-                            finish()
-                        }
-
-                        override fun onSubscribe(d: Disposable?) {
-
-                        }
-
-                        override fun onError(e: Throwable?) {
-                            Toast.makeText(this@AjoutContact, "Failed to create contact", Toast.LENGTH_SHORT).show()
-                        }
-
-                    })
+            onValidButtonClicked()
 
         })
 
+
         takepic!!.setOnClickListener { view ->
-            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-            if (takePictureIntent.resolveActivity(packageManager) != null) {
-                var photoFile: File? = null
-                try {
-                    photoFile = createImageFile()
-                } catch (ex: IOException) {
-                    Log.e("TakePictureIntent", "can't create image")
-                }
-
-                if (photoFile != null) {
-                    val photoURI = FileProvider.getUriForFile(view.context,
-                            "com.example.repertoire.fileprovider",
-                            photoFile)
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-            }
+            onTakePictureButton(view)
         }
 
 
         importpic!!.setOnClickListener { view ->
-            val import_intent = Intent(
-                    Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            if (ActivityCompat.checkSelfPermission(view.context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMS_CALL_ID)
-            } else
-                startActivityForResult(import_intent, REQUEST_LOAD_IMAGE)
+            onImportPictureButton(view, activity)
         }
     }
+
+    private fun onImportPictureButton(view: View, activity: AjoutContact) {
+        val import_intent = Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        if (ActivityCompat.checkSelfPermission(view.context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMS_CALL_ID)
+        } else
+            startActivityForResult(import_intent, REQUEST_LOAD_IMAGE)
+    }
+
+    private fun onTakePictureButton(view: View) {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+            var photoFile: File? = null
+            try {
+                photoFile = createImageFile()
+            } catch (ex: IOException) {
+                Log.e("TakePictureIntent", "can't create image")
+            }
+
+            if (photoFile != null) {
+                val photoURI = FileProvider.getUriForFile(view.context,
+                        "com.example.repertoire.fileprovider",
+                        photoFile)
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            }
+        }
+    }
+
+    private fun onValidButtonClicked() {
+        if (prenom!!.text.isEmpty()) {
+            Toast.makeText(this, "Vous n'avez pas écrit le prénom", Toast.LENGTH_SHORT).show()
+            invalidateOptionsMenu()
+            return
+        }
+
+        if (nom!!.text.isEmpty()) {
+            Toast.makeText(this, "Vous n'avez pas écrit le nom", Toast.LENGTH_SHORT).show()
+            invalidateOptionsMenu()
+            return
+        }
+
+        if (numero!!.text.toString().trim { it <= ' ' }.length < 3) {
+            Toast.makeText(this, "Le numéro doit être composé au minimum de 3 chiffres", Toast.LENGTH_SHORT).show()
+            invalidateOptionsMenu()
+            return
+        }
+
+        val contact = Contact(
+                nom!!.text.toString(),
+                prenom!!.text.toString(),
+                numero!!.text.toString()
+
+        )
+
+        if (LastPhotoPath != null)
+            contact.photoPath = LastPhotoPath
+        contact.setisPhotoFromApp(photoFromApp)
+
+        databaseManager!!.insertContact(contact)
+        databaseManager!!.close()
+
+        val dataManager = DataManager(this)
+        dataManager.createContact(contact)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CompletableObserver {
+                    override fun onComplete() {
+                        val resultIntent = Intent()
+                        setResult(Activity.RESULT_OK, resultIntent)
+                        finish()
+                    }
+
+                    override fun onSubscribe(d: Disposable?) {
+
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        invalidateOptionsMenu()
+                        Toast.makeText(this@AjoutContact, "Failed to create contact", Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.ajout_contact_menu, menu)
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+
+            R.id.addContactButton-> {
+                item.actionView = ProgressBar(this)
+                onValidButtonClicked()
+
+
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
