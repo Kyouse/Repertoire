@@ -27,6 +27,9 @@ import java.util.Date
 import com.reclycer.repertoire.data.Contact
 import com.reclycer.repertoire.data.DataManager
 import com.reclycer.repertoire.data.DatabaseManager
+import io.reactivex.CompletableObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 
 
 class AjoutContact : AppCompatActivity() {
@@ -90,11 +93,24 @@ class AjoutContact : AppCompatActivity() {
 
             val dataManager = DataManager(this)
             dataManager.createContact(contact)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : CompletableObserver {
+                        override fun onComplete() {
+                            val resultIntent = Intent()
+                            setResult(Activity.RESULT_OK, resultIntent)
+                            finish()
+                        }
 
+                        override fun onSubscribe(d: Disposable?) {
 
-            val resultIntent = Intent()
-            setResult(Activity.RESULT_OK, resultIntent)
-            finish()
+                        }
+
+                        override fun onError(e: Throwable?) {
+                            Toast.makeText(this@AjoutContact, "Failed to create contact", Toast.LENGTH_SHORT).show()
+                        }
+
+                    })
+
         })
 
         takepic!!.setOnClickListener { view ->

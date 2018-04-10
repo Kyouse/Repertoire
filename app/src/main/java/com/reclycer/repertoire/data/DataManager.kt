@@ -2,6 +2,7 @@ package com.reclycer.repertoire.data
 
 import android.content.Context
 import android.util.Log
+import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
 import io.reactivex.SingleObserver
@@ -47,33 +48,28 @@ class DataManager(context: Context) {
                     Log.i("DataManager", "Success to list contact $it")
 
                 }
-
-
     }
 
-    fun createContact(contact: Contact) {
 
-        contactService.createContact(contact.prenom!!, contact.nom!!, contact.numero!!)
+
+
+
+    fun createContact(contact: Contact) : Completable{
+
+        return contactService.createContact(contact.prenom!!, contact.nom!!, contact.numero!!)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
-                .observeOn(Schedulers.io()) // FIXME Revenir sur le main thread
-                .subscribe(object:SingleObserver<ContactService.ApiContact>{
-                    override fun onSuccess(apiContact: ContactService.ApiContact) {
-                        databaseManager.insertContact(apiContact.toDBContact())
-                        Log.i("DataManager", "Success to create contact: $apiContact")
+                .doOnSuccess {
+                    databaseManager.insertContact(it.toDBContact())
+                    Log.i("DataManager", "Success to create contact: $it")
 
-                        databaseManager.deleteContact(contact.idContact)
-                        Log.i("DataManager", "Success to delete local contact: $apiContact")
-                    }
+                    databaseManager.deleteContact(contact.idContact)
+                    Log.i("DataManager", "Success to delete local contact: ")
+                }.toCompletable()
 
-                    override fun onSubscribe(d: Disposable?) {
-                    }
-
-                    override fun onError(e: Throwable?) {
-                        Log.i("DataManager", "Failed to create")
-
-                    }
-                })
     }
+
+
+
 
     fun updateContact(contact: Contact) {
 
