@@ -11,13 +11,21 @@
         android:id="@+id/modif_ajoutcontact"
         android:padding="@dimen/padding_edit">
 
+
+
+        <ImageView
+            android:id="@+id/modif_photo_preview"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@mipmap/ic_launcher" />
+
         <TextView
 
             android:id="@+id/modifnom"
             android:text="Nom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             ></TextView>
 
@@ -61,44 +69,18 @@
             />
 
 
-        <ImageView
-            android:id="@+id/modif_photo_preview"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_below="@+id/modif_ajoutcontact"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="41dp"
-            app:srcCompat="@mipmap/ic_launcher" />
-
         <Button
             android:id="@+id/modif_importbutton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/modif_photo_preview"
-            android:layout_marginStart="59dp"
-            android:layout_marginTop="22dp"
             android:text="Import pic" />
 
         <Button
             android:id="@+id/modif_takepicbutton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/modif_importbutton"
-            android:layout_marginStart="55dp"
-            android:layout_toEndOf="@+id/modif_importbutton"
             android:text="Take a pic" />
-
-        <Button
-            android:id="@+id/modif_valider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/modif_importbutton"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            android:text="Valider" />
-
 
     </LinearLayout>
 
