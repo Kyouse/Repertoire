@@ -28,6 +28,9 @@ import java.util.Date
 import com.reclycer.repertoire.data.Contact
 import com.reclycer.repertoire.data.DataManager
 import com.reclycer.repertoire.data.DatabaseManager
+import io.reactivex.CompletableObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 
 class ModifContact : AppCompatActivity() {
     private var prenom: EditText? = null
@@ -106,8 +109,24 @@ class ModifContact : AppCompatActivity() {
 
             val dataManager = DataManager(this)
             dataManager.updateContact(currentContact)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : CompletableObserver {
+                        override fun onComplete() {
+                            val resultIntent = Intent()
+                            setResult(Activity.RESULT_OK, resultIntent)
+                            finish()
+                        }
 
-            finish()
+                        override fun onSubscribe(d: Disposable?) {
+
+                        }
+
+                        override fun onError(e: Throwable?) {
+                            invalidateOptionsMenu()
+                            Toast.makeText(this@ModifContact, "Failed to update contact", Toast.LENGTH_SHORT).show()
+                        }
+
+                    })
         })
 
         takepic!!.setOnClickListener { view ->

@@ -71,28 +71,20 @@ class DataManager(context: Context) {
 
 
 
-    fun updateContact(contact: Contact) {
+    fun updateContact(contact: Contact) : Completable{
 
-        contactService.updateContact(contact.sync_id!!, contact.prenom!!, contact.nom!!, contact.numero!!)
+        return contactService.updateContact(contact.sync_id!!, contact.prenom!!, contact.nom!!, contact.numero!!)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
-                .observeOn(Schedulers.io())
-                .subscribe(object:SingleObserver<ContactService.ApiContact> {
-                    override fun onSuccess(apiContact: ContactService.ApiContact) {
+                .doOnSuccess {
 
-                        val contactToUpdate = databaseManager.getContact(apiContact._id!!)
-                        contactToUpdate!!.prenom = apiContact.first_name
-                        contactToUpdate!!.nom = apiContact.last_name
-                        contactToUpdate!!.numero = apiContact.phone_number
+                        val contactToUpdate = databaseManager.getContact(it._id!!)
+                        contactToUpdate!!.prenom = it.first_name
+                        contactToUpdate!!.nom = it.last_name
+                        contactToUpdate!!.numero = it.phone_number
                         databaseManager.updateContact(contactToUpdate)
-                    }
-
-                    override fun onSubscribe(d: Disposable?) {}
-
-                    override fun onError(e: Throwable?) {
-                        Log.e("DataManager", "Failed to update")
-                    }
-                })
+                    }.toCompletable()
     }
+
 
     fun deleteApiContact(id: Int) {
         val contactToDelete  = databaseManager.getContact(id)
