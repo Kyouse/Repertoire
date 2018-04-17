@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Repertoire</string>
     <string name="addContactButtonTitle">add</string>
+    <string name="edit">edit</string>
 </resources>

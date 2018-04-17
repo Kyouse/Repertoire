@@ -4,9 +4,8 @@
 
     <item
         android:id="@+id/addContactButton"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@drawable/ic_check_v"
         android:title="@string/addContactButtonTitle"
         app:showAsAction="ifRoom" />
-
 
 </menu>

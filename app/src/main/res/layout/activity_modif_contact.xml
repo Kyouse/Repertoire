@@ -4,65 +4,61 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="vertical" android:layout_width="match_parent"
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/modif_ajoutcontact"
+        android:padding="@dimen/padding_edit">
+
+        <TextView
+
+            android:id="@+id/modifnom"
+            android:text="Nom"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/modif_ajoutcontact">
+            android:layout_marginBottom="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            ></TextView>
 
-            <TextView
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/modif_Name"
+            />
 
-                android:id="@+id/modifnom"
-                android:text="Nom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                ></TextView>
+        <TextView
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/modif_Name"
-                />
+            android:id="@+id/modifprenom"
+            android:text="Prénom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            ></TextView>
 
-            <TextView
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/modif_first_name"
+            />
 
-                android:id="@+id/modifprenom"
-                android:text="Prénom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                ></TextView>
+        <TextView
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/modif_first_name"
-                />
+            android:id="@+id/numero"
+            android:text="Numéro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            ></TextView>
 
-            <TextView
-
-                android:id="@+id/numero"
-                android:text="Numéro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                ></TextView>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/modif_Numero"
-                android:inputType="phone"
-                />
-
-        </LinearLayout>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/modif_Numero"
+            android:inputType="phone"
+            />
 
 
         <ImageView
@@ -103,6 +99,8 @@
             android:layout_marginStart="20dp"
             android:text="Valider" />
 
-    </RelativeLayout>
+
+    </LinearLayout>
+
 
 </ScrollView>
