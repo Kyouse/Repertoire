@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.reclycer.repertoire.R
 import com.reclycer.repertoire.data.Contact
 import com.reclycer.repertoire.data.DatabaseManager
+import com.reclycer.repertoire.ui.edit.EditContactActivity
 import kotlinx.android.synthetic.main.activity_detail_contact.*
 
 class DetailContactActivity : AppCompatActivity() {
@@ -83,7 +84,7 @@ class DetailContactActivity : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.edit -> {
-                val intent = Intent(this, ModifContact::class.java)
+                val intent = Intent(this, EditContactActivity::class.java)
                 intent.putExtra("IdContact", currentContact!!.idContact)
                 startActivity(intent)
 
