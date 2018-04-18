@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.AjoutContact" />
+        <activity android:name=".ui.edit.AddContactActivity" />
         <activity android:name=".ui.DeleteActivity" />
 
         <provider
@@ -42,7 +42,7 @@
         </provider>
 
         <activity android:name=".ui.DetailContactActivity" />
-        <activity android:name=".ui.ModifContact"></activity>
+        <activity android:name=".ui.edit.EditContactActivity"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.reclycer.repertoire.ui
+package com.reclycer.repertoire.ui.edit
 
 import android.Manifest
 import android.app.Activity
@@ -15,31 +15,20 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.ProgressBar
+import android.widget.Toast
 import com.reclycer.repertoire.R
-
+import com.reclycer.repertoire.data.Contact
+import kotlinx.android.synthetic.main.activity_modif_contact.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.Date
-
-import com.reclycer.repertoire.data.Contact
-import com.reclycer.repertoire.data.DataManager
-import com.reclycer.repertoire.data.DatabaseManager
-import io.reactivex.CompletableObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import java.util.*
 
 
-class AjoutContact : AppCompatActivity() {
-    private var prenom: EditText? = null
-    private var nom: EditText? = null
-    private var numero: EditText? = null
-    private var valider: Button? = null
-    private var takepic: Button? = null
-    private var importpic: Button? = null
-    private var previewpicture: ImageView? = null
-    private var databaseManager: DatabaseManager? = null
+abstract class BaseEditContactActivity : AppCompatActivity() {
+
+
     private var mCurrentPhotoPath: String? = null
     private var tempPhotoPath: String? = null
     private var LastPhotoPath: String? = null
@@ -47,36 +36,26 @@ class AjoutContact : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.ajoutcontact)
-        databaseManager = DatabaseManager(this)
-        val activity = this
-
-        prenom = findViewById(R.id.edit_first_name) as EditText
-        nom = findViewById(R.id.edit_Name) as EditText
-        numero = findViewById(R.id.editNumero) as EditText
-        previewpicture = findViewById(R.id.photo_preview) as ImageView
-        valider = findViewById(R.id.valider) as Button
-        takepic = findViewById(R.id.takepicbutton) as Button
-        importpic = findViewById(R.id.importbutton) as Button
-        photoFromApp = false
-
-        valider!!.setOnClickListener(View.OnClickListener { view ->
-            onValidButtonClicked()
-
-        })
+        setContentView(R.layout.activity_modif_contact)
 
 
-        takepic!!.setOnClickListener { view ->
+//        valider!!.setOnClickListener(View.OnClickListener { view ->
+//            onValidButtonClicked()
+//
+//        })
+
+
+        takepicbutton!!.setOnClickListener { view ->
             onTakePictureButton(view)
         }
 
 
-        importpic!!.setOnClickListener { view ->
-            onImportPictureButton(view, activity)
+        importbutton!!.setOnClickListener { view ->
+//            onImportPictureButton(view, activity)
         }
     }
 
-    private fun onImportPictureButton(view: View, activity: AjoutContact) {
+    private fun onImportPictureButton(view: View, activity: AddContactActivity) {
         val import_intent = Intent(
                 Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -108,13 +87,13 @@ class AjoutContact : AppCompatActivity() {
     }
 
     private fun onValidButtonClicked() {
-        if (prenom!!.text.isEmpty()) {
+        if (edit_first_name!!.text.isEmpty()) {
             Toast.makeText(this, "Vous n'avez pas écrit le prénom", Toast.LENGTH_SHORT).show()
             invalidateOptionsMenu()
             return
         }
 
-        if (nom!!.text.isEmpty()) {
+        if (edit_Name!!.text.isEmpty()) {
             Toast.makeText(this, "Vous n'avez pas écrit le nom", Toast.LENGTH_SHORT).show()
             invalidateOptionsMenu()
             return
@@ -127,8 +106,8 @@ class AjoutContact : AppCompatActivity() {
         }
 
         val contact = Contact(
-                nom!!.text.toString(),
-                prenom!!.text.toString(),
+                edit_Name!!.text.toString(),
+                edit_first_name!!.text.toString(),
                 numero!!.text.toString()
 
         )
@@ -137,30 +116,10 @@ class AjoutContact : AppCompatActivity() {
             contact.photoPath = LastPhotoPath
         contact.setisPhotoFromApp(photoFromApp)
 
-        databaseManager!!.insertContact(contact)
-        databaseManager!!.close()
-
-        val dataManager = DataManager(this)
-        dataManager.createContact(contact)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : CompletableObserver {
-                    override fun onComplete() {
-                        val resultIntent = Intent()
-                        setResult(Activity.RESULT_OK, resultIntent)
-                        finish()
-                    }
-
-                    override fun onSubscribe(d: Disposable?) {
-
-                    }
-
-                    override fun onError(e: Throwable?) {
-                        invalidateOptionsMenu()
-                        Toast.makeText(this@AjoutContact, "Failed to create contact", Toast.LENGTH_SHORT).show()
-                    }
-
-                })
+        save(contact)
     }
+
+    protected abstract fun save(contact: Contact)
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -214,7 +173,7 @@ class AjoutContact : AppCompatActivity() {
                     }
                     LastPhotoPath = mCurrentPhotoPath
                     tempPhotoPath = mCurrentPhotoPath
-                    previewpicture!!.setImageURI(Uri.fromFile(File(LastPhotoPath!!)))
+                    photo_preview!!.setImageURI(Uri.fromFile(File(LastPhotoPath!!)))
                     photoFromApp = true
                 }
                 REQUEST_LOAD_IMAGE -> {
@@ -232,7 +191,7 @@ class AjoutContact : AppCompatActivity() {
                     LastPhotoPath = getRealPathFromURI(selectedImageURI)
                     Log.i("path", LastPhotoPath)
 
-                    previewpicture!!.setImageURI(Uri.fromFile(File(LastPhotoPath!!)))
+                    photo_preview!!.setImageURI(Uri.fromFile(File(LastPhotoPath!!)))
                     photoFromApp = false
                 }
             }

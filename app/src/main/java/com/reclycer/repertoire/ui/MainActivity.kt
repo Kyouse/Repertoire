@@ -13,6 +13,7 @@ import com.reclycer.repertoire.R
 import com.reclycer.repertoire.data.ContactService
 import com.reclycer.repertoire.data.DataManager
 import com.reclycer.repertoire.data.DatabaseManager
+import com.reclycer.repertoire.ui.edit.AddContactActivity
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -79,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
 
             R.id.action_add -> {
-                val intent = Intent(this, AjoutContact::class.java)
+                val intent = Intent(this, AddContactActivity::class.java)
                 startActivityForResult(intent, 1)
 
                 return true
