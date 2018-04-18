@@ -19,6 +19,8 @@ class AddContactActivity : BaseEditContactActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        databaseManager = DatabaseManager(this)
+
     }
 
     override fun save(contact: Contact) {
