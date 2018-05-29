@@ -14,11 +14,11 @@ class Contact {
     @DatabaseField(columnName = "idContact", generatedId = true)
     var idContact: Int = 0
     @DatabaseField
-    var nom: String? = null
+    var lastName: String? = null
     @DatabaseField
-    var prenom: String? = null
+    var firstName: String? = null
     @DatabaseField
-    var numero: String? = null
+    var phoneNumber: String? = null
     @DatabaseField
     var photoPath: String? = null
     @DatabaseField
@@ -31,9 +31,9 @@ class Contact {
 
 
     constructor(nom: String, prenom: String, numero: String?) {
-        this.nom = nom
-        this.prenom = prenom
-        this.numero = numero
+        this.lastName = nom
+        this.firstName = prenom
+        this.phoneNumber = numero
     }
 
     constructor() {}

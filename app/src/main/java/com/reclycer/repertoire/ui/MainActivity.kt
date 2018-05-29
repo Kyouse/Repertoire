@@ -29,8 +29,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-
         contact_list.layoutManager = LinearLayoutManager(this)
         contact_list.adapter = myAdapter
 

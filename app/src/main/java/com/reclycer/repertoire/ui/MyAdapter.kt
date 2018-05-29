@@ -59,8 +59,8 @@ class MyAdapter : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
         fun display(personne: Contact) {
             currentContact = personne
-            name!!.text = currentContact!!.nom + ' ' + currentContact!!.prenom
-            description!!.text = currentContact!!.numero
+            name!!.text = currentContact!!.lastName + ' ' + currentContact!!.firstName
+            description!!.text = currentContact!!.phoneNumber
             if (currentContact!!.photoPath != null) {
                 val file = File(currentContact!!.photoPath!!)
                 if (file.exists())

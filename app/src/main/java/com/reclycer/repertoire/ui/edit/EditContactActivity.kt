@@ -12,7 +12,7 @@ import com.reclycer.repertoire.data.DatabaseManager
 import io.reactivex.CompletableObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.activity_modif_contact.*
+import kotlinx.android.synthetic.main.activity_update_contact.*
 
 
 @SuppressLint("Registered")
@@ -30,9 +30,9 @@ class EditContactActivity : BaseEditContactActivity() {
     }
 
     override fun save(contact: Contact) {
-        currentContact!!.prenom = edit_first_name!!.text.toString()
-        currentContact!!.nom = edit_Name!!.text.toString()
-        currentContact!!.numero = numero!!.text.toString()
+        currentContact!!.firstName = editFirstName!!.text.toString()
+        currentContact!!.lastName = editLastName!!.text.toString()
+        currentContact!!.phoneNumber = editPhoneNumber!!.text.toString()
 
         databaseManager!!.updateContact(currentContact!!)
         databaseManager!!.close()
@@ -64,12 +64,9 @@ class EditContactActivity : BaseEditContactActivity() {
         val idContact = mIntent.getIntExtra("IdContact", 0)
         Log.i("idContact", idContact.toString())
         currentContact = databaseManager!!.getContact(idContact)?:throw RuntimeException("IdContact introuvable")
-        edit_first_name!!.setText(currentContact!!.prenom)
-        edit_Name!!.setText(currentContact!!.nom)
-        numero!!.text = currentContact!!.numero
+        editFirstName!!.setText(currentContact!!.firstName)
+        editLastName!!.setText(currentContact!!.lastName)
+        editNumero!!.setText(currentContact!!.phoneNumber)
+
     }
-
-
-
-
 }

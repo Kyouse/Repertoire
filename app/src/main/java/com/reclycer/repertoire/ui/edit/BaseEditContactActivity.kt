@@ -19,7 +19,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import com.reclycer.repertoire.R
 import com.reclycer.repertoire.data.Contact
-import kotlinx.android.synthetic.main.activity_modif_contact.*
+import kotlinx.android.synthetic.main.activity_update_contact.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -36,7 +36,7 @@ abstract class BaseEditContactActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_modif_contact)
+        setContentView(R.layout.activity_update_contact)
 
 
 //        valider!!.setOnClickListener(View.OnClickListener { view ->
@@ -87,28 +87,28 @@ abstract class BaseEditContactActivity : AppCompatActivity() {
     }
 
     private fun onValidButtonClicked() {
-        if (edit_first_name!!.text.isEmpty()) {
+        if (editFirstName!!.text.isEmpty()) {
             Toast.makeText(this, "Vous n'avez pas écrit le prénom", Toast.LENGTH_SHORT).show()
             invalidateOptionsMenu()
             return
         }
 
-        if (edit_Name!!.text.isEmpty()) {
-            Toast.makeText(this, "Vous n'avez pas écrit le nom", Toast.LENGTH_SHORT).show()
+        if (editLastName!!.text.isEmpty()) {
+            Toast.makeText(this, "Vous n'avez pas écrit le lastName", Toast.LENGTH_SHORT).show()
             invalidateOptionsMenu()
             return
         }
 
-        if (numero!!.text.toString().trim { it <= ' ' }.length < 3) {
+        if (editPhoneNumber!!.text.toString().trim { it <= ' ' }.length < 3) {
             Toast.makeText(this, "Le numéro doit être composé au minimum de 3 chiffres", Toast.LENGTH_SHORT).show()
             invalidateOptionsMenu()
             return
         }
 
         val contact = Contact(
-                edit_Name!!.text.toString(),
-                edit_first_name!!.text.toString(),
-                numero!!.text.toString()
+                editLastName!!.text.toString(),
+                editFirstName!!.text.toString(),
+                editPhoneNumber!!.text.toString()
 
         )
 

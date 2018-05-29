@@ -1,6 +1,5 @@
 package com.reclycer.repertoire.ui
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +14,6 @@ import java.io.File
 import java.util.ArrayList
 
 import com.reclycer.repertoire.data.Contact
-import com.reclycer.repertoire.data.DataManager
-import com.reclycer.repertoire.data.DatabaseManager
 
 /**
  * Created by kyouse on 03/12/17.
@@ -71,8 +68,8 @@ class DeleteAdapter : RecyclerView.Adapter<DeleteAdapter.MyViewHolder>() {
 
         fun display(personne: Contact) {
             currentContact = personne
-            name.text = currentContact!!.nom + ' ' + currentContact!!.prenom
-            description.text = currentContact!!.numero
+            name.text = currentContact!!.lastName + ' ' + currentContact!!.firstName
+            description.text = currentContact!!.phoneNumber
             if (currentContact!!.photoPath != null) {
                 val file = File(currentContact!!.photoPath!!)
                 if (file.exists())

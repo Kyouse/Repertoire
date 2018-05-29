@@ -17,22 +17,22 @@ import com.reclycer.repertoire.R
 import com.reclycer.repertoire.data.Contact
 import com.reclycer.repertoire.data.DatabaseManager
 import com.reclycer.repertoire.ui.edit.EditContactActivity
-import kotlinx.android.synthetic.main.activity_detail_contact.*
+import kotlinx.android.synthetic.main.activity_display_contact.*
 
 class DetailContactActivity : AppCompatActivity() {
 //    @BindView(R.id.imageView2) internal var photo: ImageView? = null
 //    @BindView(R.id.phoneButton) internal var phoneButton: ImageButton? = null
 //    @BindView(R.id.smsButton) internal var smsButton: ImageButton? = null
-//    @BindView(R.id.nom_detail) internal var nom: TextView? = null
-//    @BindView(R.id.prenom_detail) internal var prenom: TextView? = null
-//    @BindView(R.id.numero_detail) internal var numero: TextView? = null
+//    @BindView(R.id.nom_detail) internal var lastName: TextView? = null
+//    @BindView(R.id.prenom_detail) internal var firstName: TextView? = null
+//    @BindView(R.id.numero_detail) internal var phoneNumber: TextView? = null
 
 
     private var currentContact: Contact? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_contact)
+        setContentView(R.layout.activity_display_contact)
 
 
         val idContact: Int
@@ -45,9 +45,8 @@ class DetailContactActivity : AppCompatActivity() {
         currentContact = databaseManager.getContact(idContact)
         databaseManager.close()
 
-            nom_detail!!.text = currentContact!!.nom
-        prenom_detail!!.text = currentContact!!.prenom
-        numero_detail!!.text = currentContact!!.numero
+        nom_detail!!.text = "${currentContact!!.lastName} ${currentContact!!.firstName}"
+        numero_detail!!.text = currentContact!!.phoneNumber
         if (currentContact!!.photoPath != null) {
             val file = File(currentContact!!.photoPath!!)
             if (file.exists())
@@ -61,7 +60,7 @@ class DetailContactActivity : AppCompatActivity() {
 
         phoneButton!!.setOnClickListener(View.OnClickListener { view ->
             val phoneIntent = Intent(Intent.ACTION_CALL)
-            phoneIntent.data = Uri.parse("tel:" + currentContact!!.numero!!)
+            phoneIntent.data = Uri.parse("tel:" + currentContact!!.phoneNumber!!)
 
             if (ActivityCompat.checkSelfPermission(view.context,
                     Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -71,7 +70,7 @@ class DetailContactActivity : AppCompatActivity() {
             startActivity(phoneIntent)
         })
 
-        smsButton!!.setOnClickListener { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + currentContact!!.numero!!))) }
+        smsButton!!.setOnClickListener { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("sms:" + currentContact!!.phoneNumber!!))) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

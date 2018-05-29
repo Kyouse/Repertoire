@@ -5,7 +5,6 @@ import android.util.Log
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
-import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
@@ -38,9 +37,9 @@ class DataManager(context: Context) {
                                 if (dbContact == null) {
                                     databaseManager.insertContact(apiContact.toDBContact())
                                 } else {
-                                    dbContact.prenom = apiContact.first_name
-                                    dbContact.nom = apiContact.last_name
-                                    dbContact.numero = apiContact.phone_number
+                                    dbContact.firstName = apiContact.first_name
+                                    dbContact.lastName = apiContact.last_name
+                                    dbContact.phoneNumber = apiContact.phone_number
                                     databaseManager.updateContact(dbContact)
                                 }
                             }
@@ -56,7 +55,7 @@ class DataManager(context: Context) {
 
     fun createContact(contact: Contact) : Completable{
 
-        return contactService.createContact(contact.prenom!!, contact.nom!!, contact.numero!!)
+        return contactService.createContact(contact.firstName!!, contact.lastName!!, contact.phoneNumber!!)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .doOnSuccess {
                     databaseManager.insertContact(it.toDBContact())
@@ -73,14 +72,14 @@ class DataManager(context: Context) {
 
     fun updateContact(contact: Contact) : Completable{
 
-        return contactService.updateContact(contact.sync_id!!, contact.prenom!!, contact.nom!!, contact.numero!!)
+        return contactService.updateContact(contact.sync_id!!, contact.firstName!!, contact.lastName!!, contact.phoneNumber!!)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .doOnSuccess {
 
                         val contactToUpdate = databaseManager.getContact(it._id!!)
-                        contactToUpdate!!.prenom = it.first_name
-                        contactToUpdate!!.nom = it.last_name
-                        contactToUpdate!!.numero = it.phone_number
+                        contactToUpdate!!.firstName = it.first_name
+                        contactToUpdate!!.lastName = it.last_name
+                        contactToUpdate!!.phoneNumber = it.phone_number
                         databaseManager.updateContact(contactToUpdate)
                     }.toCompletable()
     }

@@ -2,4 +2,7 @@
     <string name="app_name">Repertoire</string>
     <string name="addContactButtonTitle">add</string>
     <string name="edit">edit</string>
+    <string name="last_name">Nom :</string>
+    <string name="first_name">Prenom :</string>
+    <string name="phone_number">Numero :</string>
 </resources>
