@@ -27,6 +27,8 @@ class Contact {
     var sync_id: String? = null
     @DatabaseField
     var to_delete: Boolean? = false
+    @DatabaseField
+    var token: String? = null
 
 
 
