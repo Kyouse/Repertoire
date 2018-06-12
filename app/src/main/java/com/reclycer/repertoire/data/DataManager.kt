@@ -58,7 +58,9 @@ class DataManager(context: Context) {
         return contactService.createContact(contact.firstName!!, contact.lastName!!, contact.phoneNumber!!)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .doOnSuccess {
-                    databaseManager.insertContact(it.toDBContact())
+                    val dbContact = it.toDBContact()
+                    dbContact.isCurrent = contact.isCurrent
+                    databaseManager.insertContact(dbContact)
                     Log.i("DataManager", "Success to create contact: $it")
 
                     databaseManager.deleteContact(contact.idContact)
@@ -72,14 +74,15 @@ class DataManager(context: Context) {
 
     fun updateContact(contact: Contact) : Completable{
 
-        return contactService.updateContact(contact.sync_id!!, contact.firstName!!, contact.lastName!!, contact.phoneNumber!!)
+        return contactService.updateContact(contact.sync_id!!, contact.firstName!!, contact.lastName!!, contact.phoneNumber!!, contact.gcmToken)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .doOnSuccess {
 
                         val contactToUpdate = databaseManager.getContact(it._id!!)
                         contactToUpdate!!.firstName = it.first_name
-                        contactToUpdate!!.lastName = it.last_name
-                        contactToUpdate!!.phoneNumber = it.phone_number
+                        contactToUpdate.lastName = it.last_name
+                        contactToUpdate.phoneNumber = it.phone_number
+                        contactToUpdate.gcmToken = it.gcm_token
                         databaseManager.updateContact(contactToUpdate)
                     }.toCompletable()
     }
@@ -114,6 +117,7 @@ class DataManager(context: Context) {
 private fun ContactService.ApiContact.toDBContact(): Contact {
     val contact= Contact(last_name, first_name, phone_number)
     contact.sync_id = _id
-
+    contact.email = email
+    contact.gcmToken = gcm_token
     return contact
 }

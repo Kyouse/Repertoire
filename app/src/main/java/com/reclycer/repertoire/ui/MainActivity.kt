@@ -33,8 +33,6 @@ class MainActivity : AppCompatActivity() {
         contact_list.adapter = myAdapter
 
         databasemanager = DatabaseManager(this)
-        displayUpdatedContent()
-
         datamanager = DataManager(this)
 
 
@@ -79,6 +77,7 @@ class MainActivity : AppCompatActivity() {
 
             R.id.action_add -> {
                 val intent = Intent(this, AddContactActivity::class.java)
+                intent.putExtra(AddContactActivity.IS_CURRENT, false)
                 startActivityForResult(intent, 1)
 
                 return true
@@ -107,5 +106,22 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         refresh(datamanager)
 
+        if(!databasemanager.hasCurrentUser()) {
+            showCreateUserScreen()
+        }else{
+
+            displayUpdatedContent()
+        }
     }
+
+
+
+    private fun showCreateUserScreen() {
+        val intent = Intent(this, AddContactActivity::class.java)
+        intent.putExtra(AddContactActivity.IS_CURRENT, true)
+        startActivityForResult(intent, 1)
+    }
+
+
+
 }

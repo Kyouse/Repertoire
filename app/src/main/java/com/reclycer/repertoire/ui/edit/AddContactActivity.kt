@@ -3,6 +3,7 @@ package com.reclycer.repertoire.ui.edit
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.reclycer.repertoire.data.Contact
 import com.reclycer.repertoire.data.DataManager
@@ -15,16 +16,22 @@ import io.reactivex.disposables.Disposable
 class AddContactActivity : BaseEditContactActivity() {
 
     private var databaseManager: DatabaseManager? = null
+    private var isCurrent: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        isCurrent = intent.getBooleanExtra(IS_CURRENT, false)
         databaseManager = DatabaseManager(this)
 
     }
 
     override fun save(contact: Contact) {
+
+        contact.isCurrent = isCurrent
+        Log.i("contact", "$contact")
         databaseManager!!.insertContact(contact)
+
         databaseManager!!.close()
 
         val dataManager = DataManager(this)
@@ -47,5 +54,10 @@ class AddContactActivity : BaseEditContactActivity() {
                     }
 
                 })
+    }
+
+
+    companion object {
+        const val IS_CURRENT= "IS_CURRENT"
     }
 }

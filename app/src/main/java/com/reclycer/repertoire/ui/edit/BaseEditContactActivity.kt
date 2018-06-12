@@ -39,11 +39,6 @@ abstract class BaseEditContactActivity : AppCompatActivity() {
         setContentView(R.layout.activity_update_contact)
 
 
-//        valider!!.setOnClickListener(View.OnClickListener { view ->
-//            onValidButtonClicked()
-//
-//        })
-
 
         takepicbutton!!.setOnClickListener { view ->
             onTakePictureButton(view)
@@ -51,7 +46,6 @@ abstract class BaseEditContactActivity : AppCompatActivity() {
 
 
         importbutton!!.setOnClickListener { view ->
-//            onImportPictureButton(view, activity)
         }
     }
 

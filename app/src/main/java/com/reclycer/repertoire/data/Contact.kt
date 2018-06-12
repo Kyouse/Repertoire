@@ -28,7 +28,11 @@ class Contact {
     @DatabaseField
     var to_delete: Boolean? = false
     @DatabaseField
-    var token: String? = null
+    var email: String? = null
+    @DatabaseField
+    var gcmToken: String? = null
+    @DatabaseField
+    var isCurrent: Boolean? = false
 
 
 
@@ -36,6 +40,7 @@ class Contact {
         this.lastName = nom
         this.firstName = prenom
         this.phoneNumber = numero
+        //this.email = email
     }
 
     constructor() {}

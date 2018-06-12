@@ -9,7 +9,7 @@ import retrofit2.http.*
  */
 interface ContactService {
 
-    data class ApiContact(val _id:String?, val first_name:String, val last_name: String, val phone_number:String) {
+    data class ApiContact(val _id:String?, val first_name:String, val last_name: String, val phone_number:String, val email: String?, val gcm_token: String?) {
 
     }
 
@@ -27,7 +27,8 @@ interface ContactService {
     fun updateContact(@Path("id") _id: String,
                       @Field("first_name") first_name: String,
                       @Field("last_name") last_name: String,
-                      @Field("phone_number") phone_number: String) : Single<ApiContact>
+                      @Field("phone_number") phone_number: String,
+                      @Field("gcm_token") gcm_token: String?) : Single<ApiContact>
 
     @DELETE("contact/{id}")
     fun deleteContact(@Path("id") _id: String): Completable

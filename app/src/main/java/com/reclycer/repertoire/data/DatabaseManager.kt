@@ -88,7 +88,7 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
             val dao = getDao<Dao<Contact, Int>, Contact>(Contact::class.java)
             val queryBuilder = dao.queryBuilder()
             queryBuilder.where().eq(Contact.COLUMN_NAME_SYNC_ID, sync_id)
-            return queryBuilder.queryForFirst()
+               return queryBuilder.queryForFirst()
         } catch (exception: Exception) {
             Log.e("DATABASE", "Can't get contact", exception)
             return null
@@ -98,8 +98,8 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
     companion object {
 
         private val DATABASE_NAME = "Repertoire.db"
-        private val DATABASE_VERSION = 1
-        val SYNC_DATABASE = "synchronised_contacts.db"
+        private val DATABASE_VERSION = 2
+        val SYNC_DATABASE = "synchronised_contacts_v2.db"
 
     }
 
@@ -113,5 +113,15 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
         } catch (exception: Exception) {
             Log.e("DATABASE", "Can't delete contact", exception)
         }
+    }
+
+    fun hasCurrentUser(): Boolean {
+        return currentUser() != null
+    }
+
+    fun currentUser(): Contact? {
+        val currentUsers = readContactList()?.filter { it.isCurrent?:false }
+        return currentUsers?.firstOrNull()
+
     }
 }
