@@ -111,6 +111,7 @@ class MainActivity : AppCompatActivity() {
         }else{
 
             displayUpdatedContent()
+            Log.i("MainActivity", "Current user : ${databasemanager.currentUser()?.lastName} Token : ${databasemanager.currentUser()?.gcmToken} ")
         }
     }
 

@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.reclycer.repertoire.data.Contact
 import com.reclycer.repertoire.data.DataManager
 import com.reclycer.repertoire.data.DatabaseManager
+import com.reclycer.repertoire.data.fcm.MyRepertoireInstanceIDService
 import io.reactivex.CompletableObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -31,6 +32,7 @@ class AddContactActivity : BaseEditContactActivity() {
         contact.isCurrent = isCurrent
         Log.i("contact", "$contact")
         databaseManager!!.insertContact(contact)
+        if(isCurrent){startService(Intent (this, MyRepertoireInstanceIDService::class.java))}
 
         databaseManager!!.close()
 

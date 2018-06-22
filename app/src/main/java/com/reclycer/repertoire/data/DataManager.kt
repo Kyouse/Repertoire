@@ -55,7 +55,7 @@ class DataManager(context: Context) {
 
     fun createContact(contact: Contact) : Completable{
 
-        return contactService.createContact(contact.firstName!!, contact.lastName!!, contact.phoneNumber!!)
+        return contactService.createContact(contact.firstName!!, contact.lastName!!, contact.phoneNumber!!, contact?.gcmToken)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .doOnSuccess {
                     val dbContact = it.toDBContact()
@@ -74,7 +74,7 @@ class DataManager(context: Context) {
 
     fun updateContact(contact: Contact) : Completable{
 
-        return contactService.updateContact(contact.sync_id!!, contact.firstName!!, contact.lastName!!, contact.phoneNumber!!, contact.gcmToken)
+        return contactService.updateContact(contact.sync_id!!, contact.firstName!!, contact.lastName!!, contact.phoneNumber!!, contact?.gcmToken)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .doOnSuccess {
 
@@ -82,7 +82,9 @@ class DataManager(context: Context) {
                         contactToUpdate!!.firstName = it.first_name
                         contactToUpdate.lastName = it.last_name
                         contactToUpdate.phoneNumber = it.phone_number
-                        contactToUpdate.gcmToken = it.gcm_token
+                        if(contactToUpdate.isCurrent?:true){
+                            contactToUpdate.gcmToken = it.gcm_token
+                        }
                         databaseManager.updateContact(contactToUpdate)
                     }.toCompletable()
     }

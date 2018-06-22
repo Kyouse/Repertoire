@@ -13,14 +13,15 @@ interface ContactService {
 
     }
 
-    @GET("contact/")
+    @GET("contact2/")
     fun getContactList() : Single<List<ApiContact>>
 
     @POST("contact/")
     @FormUrlEncoded
     fun createContact(@Field("first_name") first_name: String,
                       @Field("last_name") last_name: String,
-                      @Field("phone_number") phone_number: String) : Single<ApiContact>
+                      @Field("phone_number") phone_number: String,
+                      @Field("gcm_token") gcm_token : String?) : Single<ApiContact>
 
     @PUT("contact/{id}")
     @FormUrlEncoded

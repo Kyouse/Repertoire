@@ -18,7 +18,7 @@ class MyRepertoireInstanceIDService: FirebaseInstanceIdService(){
     override fun onCreate() {
         super.onCreate()
         val refreshedToken = FirebaseInstanceId.getInstance().getToken()
-        Log.d("Token", "Token already available: $refreshedToken")
+        logTag("Token already available: $refreshedToken")
         updateCurrentUserByAddingTokenAndSendItToServer(refreshedToken)
     }
 
@@ -26,7 +26,7 @@ class MyRepertoireInstanceIDService: FirebaseInstanceIdService(){
         super.onTokenRefresh()
 
         val refreshedToken = FirebaseInstanceId.getInstance().getToken()
-        Log.d("Token", "Refreshed Token: $refreshedToken")
+        logTag("Refreshed Token: $refreshedToken")
         updateCurrentUserByAddingTokenAndSendItToServer(refreshedToken)
     }
 
@@ -58,5 +58,9 @@ class MyRepertoireInstanceIDService: FirebaseInstanceIdService(){
                     })
         }
 
+    }
+
+    fun Any.logTag(msg:String?){
+        Log.d(this.javaClass.name,"$msg")
     }
 }

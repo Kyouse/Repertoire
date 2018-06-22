@@ -22,6 +22,7 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
         } catch (exception: Exception) {
             Log.e("DATABASE", "Can't create database", exception)
         }
+
     }
 
     override fun onUpgrade(sqLiteDatabase: SQLiteDatabase, connectionSource: ConnectionSource, oldVersion: Int, newVersion: Int) {
