@@ -37,25 +37,27 @@ class MyRepertoireInstanceIDService: FirebaseInstanceIdService(){
         val dataManager = DataManager(this)
         val currentUser = databaseManager.currentUser()
 
-        currentUser?.let{
-            it.gcmToken = refreshedToken
-            databaseManager.updateContact(it)
-            dataManager.updateContact(it)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : CompletableObserver {
-                        override fun onComplete() {
+        currentUser?.let {
+            if (it.sync_id != null) {
+                it.gcmToken = refreshedToken
+                databaseManager.updateContact(it)
+                dataManager.updateContact(it)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : CompletableObserver {
+                            override fun onComplete() {
 
-                        }
+                            }
 
-                        override fun onSubscribe(d: Disposable?) {
+                            override fun onSubscribe(d: Disposable?) {
 
-                        }
+                            }
 
-                        override fun onError(e: Throwable?) {
-                            Toast.makeText(this@MyRepertoireInstanceIDService, "Failed to update contact", Toast.LENGTH_SHORT).show()
-                        }
+                            override fun onError(e: Throwable?) {
+                                Toast.makeText(this@MyRepertoireInstanceIDService, "Failed to update contact", Toast.LENGTH_SHORT).show()
+                            }
 
-                    })
+                        })
+            }
         }
 
     }

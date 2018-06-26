@@ -100,7 +100,7 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
 
         private val DATABASE_NAME = "Repertoire.db"
         private val DATABASE_VERSION = 2
-        val SYNC_DATABASE = "synchronised_contacts_v2.db"
+        val SYNC_DATABASE = "synchronised_contacts_v3.db"
 
     }
 

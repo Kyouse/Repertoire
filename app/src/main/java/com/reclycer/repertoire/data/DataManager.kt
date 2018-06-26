@@ -1,7 +1,9 @@
 package com.reclycer.repertoire.data
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
+import com.reclycer.repertoire.data.fcm.MyRepertoireInstanceIDService
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
@@ -14,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 /**
  * Created by kyouse on 06/02/18.
  */
-class DataManager(context: Context) {
+class DataManager(val context: Context) {
 
     val databaseManager = DatabaseManager(context, DatabaseManager.SYNC_DATABASE)
 
@@ -60,11 +62,17 @@ class DataManager(context: Context) {
                 .doOnSuccess {
                     val dbContact = it.toDBContact()
                     dbContact.isCurrent = contact.isCurrent
+                    if(dbContact.isCurrent?:true){
+                        dbContact.gcmToken = contact.gcmToken
+                    }
                     databaseManager.insertContact(dbContact)
                     Log.i("DataManager", "Success to create contact: $it")
 
                     databaseManager.deleteContact(contact.idContact)
                     Log.i("DataManager", "Success to delete local contact: ")
+                    if(dbContact.isCurrent == true){
+                        context.startService(Intent (context, MyRepertoireInstanceIDService::class.java))
+                    }
                 }.toCompletable()
 
     }
@@ -78,15 +86,18 @@ class DataManager(context: Context) {
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .doOnSuccess {
 
-                        val contactToUpdate = databaseManager.getContact(it._id!!)
-                        contactToUpdate!!.firstName = it.first_name
-                        contactToUpdate.lastName = it.last_name
-                        contactToUpdate.phoneNumber = it.phone_number
-                        if(contactToUpdate.isCurrent?:true){
-                            contactToUpdate.gcmToken = it.gcm_token
-                        }
-                        databaseManager.updateContact(contactToUpdate)
-                    }.toCompletable()
+                    val contactToUpdate = databaseManager.getContact(it._id!!)
+                    contactToUpdate!!.firstName = it.first_name
+                    contactToUpdate.lastName = it.last_name
+                    contactToUpdate.phoneNumber = it.phone_number
+                    if(contactToUpdate.isCurrent?:true){
+                        contactToUpdate.gcmToken = it.gcm_token
+                    }
+                    if(contactToUpdate.isCurrent == true && contactToUpdate.gcmToken == null){
+                        context.startService(Intent (context, MyRepertoireInstanceIDService::class.java))
+                    }
+                    databaseManager.updateContact(contactToUpdate)
+                }.toCompletable()
     }
 
 
