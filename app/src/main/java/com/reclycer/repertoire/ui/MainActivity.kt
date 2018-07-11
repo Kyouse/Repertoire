@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val myAdapter = MyAdapter()
+    private val myAdapter = ListContactAdapter()
     lateinit var datamanager: DataManager
     lateinit var databasemanager: DatabaseManager
 

@@ -4,9 +4,7 @@ package com.reclycer.repertoire.data
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 
-/**
- * Created by kyouse on 15/11/16.
- */
+
 
 @DatabaseTable(tableName = "T_Contact")
 class Contact {

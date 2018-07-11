@@ -52,9 +52,6 @@ class DataManager(val context: Context) {
     }
 
 
-
-
-
     fun createContact(contact: Contact) : Completable{
 
         return contactService.createContact(contact.firstName!!, contact.lastName!!, contact.phoneNumber!!, contact?.gcmToken)
