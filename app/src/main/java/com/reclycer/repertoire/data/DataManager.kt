@@ -29,7 +29,7 @@ class DataManager(val context: Context) {
     val contactService = retrofit.create(ContactService::class.java)
 
     fun refresh(): Single<List<ContactService.ApiContact>> {
-        return        contactService.getContactList()
+        return contactService.getContactList()
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .doOnSuccess {
                     it.filter { !it.first_name.isNullOrEmpty() && !it.last_name.isNullOrEmpty() }
@@ -52,14 +52,14 @@ class DataManager(val context: Context) {
     }
 
 
-    fun createContact(contact: Contact) : Completable{
+    fun createContact(contact: Contact): Completable {
 
         return contactService.createContact(contact.firstName!!, contact.lastName!!, contact.phoneNumber!!, contact?.gcmToken)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .doOnSuccess {
                     val dbContact = it.toDBContact()
                     dbContact.isCurrent = contact.isCurrent
-                    if(dbContact.isCurrent?:true){
+                    if (dbContact.isCurrent ?: true) {
                         dbContact.gcmToken = contact.gcmToken
                     }
                     databaseManager.insertContact(dbContact)
@@ -67,17 +67,15 @@ class DataManager(val context: Context) {
 
                     databaseManager.deleteContact(contact.idContact)
                     Log.i("DataManager", "Success to delete local contact: ")
-                    if(dbContact.isCurrent == true){
-                        context.startService(Intent (context, MyRepertoireInstanceIDService::class.java))
+                    if (dbContact.isCurrent == true) {
+                        context.startService(Intent(context, MyRepertoireInstanceIDService::class.java))
                     }
                 }.toCompletable()
 
     }
 
 
-
-
-    fun updateContact(contact: Contact) : Completable{
+    fun updateContact(contact: Contact): Completable {
 
         return contactService.updateContact(contact.sync_id!!, contact.firstName!!, contact.lastName!!, contact.phoneNumber!!, contact?.gcmToken)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
@@ -87,11 +85,11 @@ class DataManager(val context: Context) {
                     contactToUpdate!!.firstName = it.first_name
                     contactToUpdate.lastName = it.last_name
                     contactToUpdate.phoneNumber = it.phone_number
-                    if(contactToUpdate.isCurrent?:true){
+                    if (contactToUpdate.isCurrent ?: true) {
                         contactToUpdate.gcmToken = it.gcm_token
                     }
-                    if(contactToUpdate.isCurrent == true && contactToUpdate.gcmToken == null){
-                        context.startService(Intent (context, MyRepertoireInstanceIDService::class.java))
+                    if (contactToUpdate.isCurrent == true && contactToUpdate.gcmToken == null) {
+                        context.startService(Intent(context, MyRepertoireInstanceIDService::class.java))
                     }
                     databaseManager.updateContact(contactToUpdate)
                 }.toCompletable()
@@ -99,11 +97,11 @@ class DataManager(val context: Context) {
 
 
     fun deleteApiContact(id: Int) {
-        val contactToDelete  = databaseManager.getContact(id)
+        val contactToDelete = databaseManager.getContact(id)
         contactService.deleteContact(contactToDelete!!.sync_id!!)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .observeOn(Schedulers.io())
-                .subscribe(object:CompletableObserver{
+                .subscribe(object : CompletableObserver {
                     override fun onComplete() {
                         databaseManager.deleteContact(id)
                         Log.i("DataManager", "Success to delete contact")
@@ -121,13 +119,46 @@ class DataManager(val context: Context) {
 
                 })
 
+
+    }
+
+    /*---------------- Message ------------*/
+
+
+    fun refreshMessage(): Single<List<ContactService.ApiMessage>> {
+        return contactService.getMessages()
+                .subscribeOn(Schedulers.io()) // Executer sur le thread io
+                .doOnSuccess {
+                    it.filter { !it.from_id.isNullOrEmpty() && !it.to_id.isNullOrEmpty() }
+                            .forEach {
+                                val apiMessage = it
+                                val dbMessage = databaseManager.getMessage(apiMessage._id!!)
+                                if (dbMessage == null) {
+                                    databaseManager.insertMessage(apiMessage.toDBMessage())
+                                } else {
+//                                    dbContact.firstName = apiContact.first_name
+//                                    dbContact.lastName = apiContact.last_name
+//                                    dbContact.phoneNumber = apiContact.phone_number
+                                   // todo databaseManager.updateMessage(dbMessage)
+                                }
+                            }
+
+                    Log.i("DataManager", "Success to list contact $it")
+
+                }
     }
 }
 
 private fun ContactService.ApiContact.toDBContact(): Contact {
-    val contact= Contact(last_name, first_name, phone_number)
+    val contact = Contact(last_name, first_name, phone_number)
     contact.sync_id = _id
     contact.email = email
     contact.gcmToken = gcm_token
     return contact
+}
+
+
+private fun ContactService.ApiMessage.toDBMessage(): Message {
+    val message = Message(to_id, from_id, body, date, _id)
+    return message
 }

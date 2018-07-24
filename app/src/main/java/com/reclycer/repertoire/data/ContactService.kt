@@ -34,6 +34,7 @@ interface ContactService {
     @DELETE("contact/{id}")
     fun deleteContact(@Path("id") _id: String): Completable
 
+    data class ApiMessage(val to_id: String, val from_id: String, val body: String, val date: String?, val _id: String?)
 
     //TODO create api message
     @GET("messages/")

@@ -18,6 +18,7 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
     override fun onCreate(sqLiteDatabase: SQLiteDatabase, connectionSource: ConnectionSource) {
         try {
             TableUtils.createTable<Contact>(connectionSource, Contact::class.java)
+            TableUtils.createTable<Message>(connectionSource, Message::class.java)
             Log.i("DATABASE", "onCreate invoked")
         } catch (exception: Exception) {
             Log.e("DATABASE", "Can't create database", exception)
@@ -36,8 +37,18 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
         } catch (exception: Exception) {
             Log.e("DATABASE", "Can't insert contact into Database", exception)
         }
+    }
+
+    fun insertMessage(message: Message) {
+        try {
+            val dao = getDao<Dao<Message, Int>, Message>(Message::class.java)
+            dao.create(message)
+        } catch (exception: Exception) {
+            Log.e("DATABASE", "Can't insert message into Database", exception)
+        }
 
     }
+
 
     fun readContactList(): List<Contact>? {
         try {
@@ -49,7 +60,18 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
             Log.e("DATABASE", "Can't readContact", exception)
             return null
         }
+    }
 
+    fun readMessageList(): List<Message> {
+        try {
+            val dao = getDao<Dao<Message, Int>, Message>(Message::class.java)
+            val list_message = dao.queryForAll()
+            Log.i("DATABASE", "readMessage invoked")
+            return list_message
+        } catch (exception: Exception) {
+            Log.e("DATABASE", "Can't readMessage", exception)
+            throw(exception)
+        }
     }
 
     fun getContact(id: Int): Contact? {
@@ -89,9 +111,21 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
             val dao = getDao<Dao<Contact, Int>, Contact>(Contact::class.java)
             val queryBuilder = dao.queryBuilder()
             queryBuilder.where().eq(Contact.COLUMN_NAME_SYNC_ID, sync_id)
-               return queryBuilder.queryForFirst()
+            return queryBuilder.queryForFirst()
         } catch (exception: Exception) {
             Log.e("DATABASE", "Can't get contact", exception)
+            return null
+        }
+    }
+
+    fun getMessage(sync_id: String): Message? {
+        try {
+            val dao = getDao<Dao<Message, Int>, Message>(Message::class.java)
+            val queryBuilder = dao.queryBuilder()
+            queryBuilder.where().eq(Message.COLUMN_NAME_SYNC_ID, sync_id)
+            return queryBuilder.queryForFirst()
+        } catch (exception: Exception) {
+            Log.e("DATABASE", "Can't get message", exception)
             return null
         }
     }
@@ -99,8 +133,8 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
     companion object {
 
         private val DATABASE_NAME = "Repertoire.db"
-        private val DATABASE_VERSION = 2
-        val SYNC_DATABASE = "synchronised_contacts_v3.db"
+        private val DATABASE_VERSION = 6
+        val SYNC_DATABASE = "synchronised_contacts_v7.db"
 
     }
 
@@ -121,7 +155,7 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
     }
 
     fun currentUser(): Contact? {
-        val currentUsers = readContactList()?.filter { it.isCurrent?:false }
+        val currentUsers = readContactList()?.filter { it.isCurrent ?: false }
         return currentUsers?.firstOrNull()
 
     }
