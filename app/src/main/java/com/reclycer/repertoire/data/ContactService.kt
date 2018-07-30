@@ -43,9 +43,9 @@ interface ContactService {
     @POST("messages/")
     @FormUrlEncoded
     fun sendMessage(@Field("to_id") to_id: String,
-                      @Field("from_id") from_id: String,
-                      @Field("body") body : String,
-                      @Field("date") date : String?) : Single<ApiMessage>
+                    @Field("from_id") from_id: String,
+                    @Field("body") body : String,
+                    @Field("date") date : String?): Single<ApiMessage>
 
 
 }

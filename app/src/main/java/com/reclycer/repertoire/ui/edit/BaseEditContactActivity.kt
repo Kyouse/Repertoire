@@ -49,15 +49,15 @@ abstract class BaseEditContactActivity : AppCompatActivity() {
         }
     }
 
-    private fun onImportPictureButton(view: View, activity: AddContactActivity) {
-        val import_intent = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        if (ActivityCompat.checkSelfPermission(view.context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMS_CALL_ID)
-        } else
-            startActivityForResult(import_intent, REQUEST_LOAD_IMAGE)
-    }
+//    private fun onImportPictureButton(view: View, activity: AddContactActivity) {
+//        val import_intent = Intent(
+//                Intent.ACTION_PICK,
+//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+//        if (ActivityCompat.checkSelfPermission(view.context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMS_CALL_ID)
+//        } else
+//            startActivityForResult(import_intent, REQUEST_LOAD_IMAGE)
+//    }
 
     private fun onTakePictureButton(view: View) {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)

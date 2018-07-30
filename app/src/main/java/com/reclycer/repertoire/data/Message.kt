@@ -22,12 +22,11 @@ class Message {
 
 
 
-    constructor(from_id: String, to_id: String, body: String?, date: String?, sync_id: String?) {
+    constructor(from_id: String, to_id: String, body: String?, date: String?) {
         this.from_id = from_id
         this.to_id = to_id
         this.body = body
         this.date = date
-        this.sync_id = sync_id
     }
 
     constructor() {}

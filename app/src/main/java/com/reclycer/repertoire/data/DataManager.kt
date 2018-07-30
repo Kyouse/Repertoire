@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.reclycer.repertoire.data.fcm.MyRepertoireInstanceIDService
+import com.reclycer.repertoire.data.fcm.MyRepertoireMessagingService
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
@@ -147,6 +148,22 @@ class DataManager(val context: Context) {
 
                 }
     }
+
+    fun createMessage(message: Message): Completable {
+
+        return contactService.sendMessage(message.to_id!!, message.from_id!!, message.body!!, message?.date)
+                .subscribeOn(Schedulers.io()) // Executer sur le thread io
+                .doOnSuccess {
+                    val dbMessage = it.toDBMessage()
+                    databaseManager.insertMessage(dbMessage)
+                    Log.i("DataManager", "Success to create message: $it")
+
+                    context.startService(Intent(context, MyRepertoireMessagingService::class.java))
+//                    databaseManager.deleteMessage(message.idContact)
+//                    Log.i("DataManager", "Success to delete local contact: ")
+                }.toCompletable()
+
+    }
 }
 
 private fun ContactService.ApiContact.toDBContact(): Contact {
@@ -159,6 +176,7 @@ private fun ContactService.ApiContact.toDBContact(): Contact {
 
 
 private fun ContactService.ApiMessage.toDBMessage(): Message {
-    val message = Message(to_id, from_id, body, date, _id)
+    val message = Message(to_id, from_id, body, date)
+    message.sync_id = _id
     return message
 }
