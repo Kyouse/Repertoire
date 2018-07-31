@@ -29,19 +29,21 @@ class MessageListActivity : AppCompatActivity() {
     lateinit var databasemanager: DatabaseManager
     lateinit var dataManager: DataManager
     lateinit var to_id_contact: String
+    lateinit var from_id_contact: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_message)
 
-        to_id_contact = intent.getStringExtra("ContactID")
-
         message_list.layoutManager = LinearLayoutManager(this)
         message_list.adapter = messageAdapter
         databasemanager = DatabaseManager(this)
         dataManager = DataManager(this)
-        refresh(dataManager)
 
+        to_id_contact = intent.getStringExtra("ContactID")
+        from_id_contact = databasemanager.currentUser()?.sync_id.toString()
+
+        refresh(dataManager)
         displayUpdatedContent()
 
         button_send!!.setOnClickListener { view ->
@@ -52,8 +54,8 @@ class MessageListActivity : AppCompatActivity() {
     private fun onButtonSend(view: View?) {
         val current_message = Message()
         current_message.to_id = to_id_contact
-        current_message.from_id = databasemanager.currentUser()?.idContact.toString()
-        current_message.date = Calendar.getInstance().toString()
+        current_message.from_id = from_id_contact
+//        current_message.date = Calendar.getInstance().toString()
         current_message.body = edit_message.text.toString()
 
         dataManager.createMessage(current_message)
@@ -68,6 +70,7 @@ class MessageListActivity : AppCompatActivity() {
                     }
 
                     override fun onError(e: Throwable?) {
+                        Log.e("ERROR","Exception happened while creating message $e ${e?.message}")
                         Toast.makeText(this@MessageListActivity, "Failed to create message", Toast.LENGTH_SHORT).show()
                     }
 
@@ -93,7 +96,17 @@ class MessageListActivity : AppCompatActivity() {
 
     private fun displayUpdatedContent() {
         messageAdapter.messageList.clear()
-        val messageList = databasemanager.readMessageList().toList()
+        val contactList = databasemanager.readContactList()
+        val messageList = databasemanager.readMessageList()
+                .filter {
+                    (it.to_id == to_id_contact && it.from_id == from_id_contact) ||
+                            (it.to_id == from_id_contact && it.from_id == to_id_contact)
+                }
+                .map {
+                    message ->
+                        val from = contactList?.firstOrNull{ it.sync_id == message.from_id}
+                        val to = contactList?.firstOrNull{ it.sync_id == message.to_id}
+        ListMessageAdapter.MessageWrapper(message, from, to)}
         messageAdapter.messageList.addAll(messageList)
         messageAdapter.notifyDataSetChanged()
     }

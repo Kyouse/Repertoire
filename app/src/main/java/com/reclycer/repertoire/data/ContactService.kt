@@ -37,15 +37,14 @@ interface ContactService {
     data class ApiMessage(val to_id: String, val from_id: String, val body: String, val date: String?, val _id: String?)
 
     //TODO create api message
-    @GET("messages/")
+    @GET("messages2/")
     fun getMessages() : Single<List<ApiMessage>>
 
     @POST("messages/")
     @FormUrlEncoded
     fun sendMessage(@Field("to_id") to_id: String,
                     @Field("from_id") from_id: String,
-                    @Field("body") body : String,
-                    @Field("date") date : String?): Single<ApiMessage>
+                    @Field("body") body : String): Single<ApiMessage>
 
 
 }

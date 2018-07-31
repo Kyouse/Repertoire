@@ -157,6 +157,6 @@ class DatabaseManager(context: Context, databaseName: String = SYNC_DATABASE) : 
     fun currentUser(): Contact? {
         val currentUsers = readContactList()?.filter { it.isCurrent ?: false }
         return currentUsers?.firstOrNull()
-
     }
+
 }

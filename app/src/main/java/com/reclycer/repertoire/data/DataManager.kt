@@ -151,16 +151,10 @@ class DataManager(val context: Context) {
 
     fun createMessage(message: Message): Completable {
 
-        return contactService.sendMessage(message.to_id!!, message.from_id!!, message.body!!, message?.date)
+        return contactService.sendMessage(message.from_id!!, message.to_id!!, message.body!!)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .doOnSuccess {
-                    val dbMessage = it.toDBMessage()
-                    databaseManager.insertMessage(dbMessage)
-                    Log.i("DataManager", "Success to create message: $it")
 
-                    context.startService(Intent(context, MyRepertoireMessagingService::class.java))
-//                    databaseManager.deleteMessage(message.idContact)
-//                    Log.i("DataManager", "Success to delete local contact: ")
                 }.toCompletable()
 
     }

@@ -26,7 +26,6 @@ class Message {
         this.from_id = from_id
         this.to_id = to_id
         this.body = body
-        this.date = date
     }
 
     constructor() {}

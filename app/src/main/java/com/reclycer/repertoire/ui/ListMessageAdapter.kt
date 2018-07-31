@@ -7,16 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.reclycer.repertoire.R
+import com.reclycer.repertoire.data.Contact
 import com.reclycer.repertoire.data.Message
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.contact_cell.*
 import kotlinx.android.synthetic.main.message_cell.*
 import java.io.File
+import java.sql.Wrapper
 import java.util.ArrayList
 
 class ListMessageAdapter: RecyclerView.Adapter<ListMessageAdapter.MyViewHolder>() {
 
-    val messageList: MutableList<Message> = ArrayList()
+    val messageList: MutableList<MessageWrapper> = ArrayList()
 
 
     override fun onBindViewHolder(holder: ListMessageAdapter.MyViewHolder, position: Int) {
@@ -39,6 +41,8 @@ class ListMessageAdapter: RecyclerView.Adapter<ListMessageAdapter.MyViewHolder>(
     }
 
 
+    data class MessageWrapper(val message: Message, val from: Contact?, val to:Contact?)
+
     inner class MyViewHolder(override val containerView: View?) : RecyclerView.ViewHolder(containerView),
             LayoutContainer {
 
@@ -52,9 +56,9 @@ class ListMessageAdapter: RecyclerView.Adapter<ListMessageAdapter.MyViewHolder>(
             }
         } */
 
-        fun display(message: Message) {
-            message_from!!.text = "From: " + message.from_id
-            message_body!!.text = message.body
+        fun display(wrapper: MessageWrapper) {
+            message_from!!.text = "From: " + (wrapper.from?.firstName ?: "Unknow sender : ${wrapper.message.from_id}")
+            message_body!!.text = wrapper.message.body
         }
     }
 }
