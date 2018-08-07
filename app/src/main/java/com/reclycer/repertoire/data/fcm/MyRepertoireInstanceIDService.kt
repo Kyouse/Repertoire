@@ -23,13 +23,13 @@ class MyRepertoireInstanceIDService: FirebaseInstanceIdService(){
 
     override fun onCreate() {
         super.onCreate()
-        val refreshedToken = FirebaseInstanceId.getInstance().getToken()
+        val refreshedToken = FirebaseInstanceId.getInstance().token
         logTag("Token already available: $refreshedToken")
-        if(BuildConfig.DEBUG and !hasRefreshedOnce){
-//            Completable.fromAction {
-//                FirebaseInstanceId.getInstance().deleteInstanceId()
-//                logTag("Delete available Token: $refreshedToken")
-//            }.subscribeOn(Schedulers.io()).subscribe()
+        if(BuildConfig.DEBUG and !hasRefreshedOnce and !refreshedToken.isNullOrEmpty()){
+            Completable.fromAction {
+                FirebaseInstanceId.getInstance().deleteInstanceId()
+                logTag("Delete available Token: $refreshedToken")
+            }.subscribeOn(Schedulers.io()).subscribe()
             hasRefreshedOnce = true
         }
         else {
@@ -39,11 +39,11 @@ class MyRepertoireInstanceIDService: FirebaseInstanceIdService(){
 
     override fun onTokenRefresh() {
         super.onTokenRefresh()
-
-        val refreshedToken = FirebaseInstanceId.getInstance().getToken()
+        val refreshedToken = FirebaseInstanceId.getInstance().token
         logTag("Refreshed Token: $refreshedToken")
         updateCurrentUserByAddingTokenAndSendItToServer(refreshedToken)
     }
+
 
     private fun updateCurrentUserByAddingTokenAndSendItToServer(refreshedToken: String?) {
 
@@ -77,7 +77,8 @@ class MyRepertoireInstanceIDService: FirebaseInstanceIdService(){
 
     }
 
-    fun Any.logTag(msg:String?){
-        Log.d(this.javaClass.name,"$msg")
-    }
+}
+//If we want this function to be available everywhere it needs to be declared outside the class
+fun Any.logTag(msg:String?){
+    Log.d(this.javaClass.name,"$msg")
 }
