@@ -62,7 +62,7 @@ class MessageListActivity : AppCompatActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : CompletableObserver {
                     override fun onComplete() {
-                       displayUpdatedContent()
+                        refresh(dataManager)
                     }
 
                     override fun onSubscribe(d: Disposable?) {
@@ -106,7 +106,7 @@ class MessageListActivity : AppCompatActivity() {
                     message ->
                         val from = contactList?.firstOrNull{ it.sync_id == message.from_id}
                         val to = contactList?.firstOrNull{ it.sync_id == message.to_id}
-        ListMessageAdapter.MessageWrapper(message, from, to)}
+        ListMessageAdapter.MessageWrapper(message, from, to, from_id_contact)}
         messageAdapter.messageList.addAll(messageList)
         messageAdapter.notifyDataSetChanged()
     }

@@ -7,19 +7,34 @@ import android.util.Log
 import android.widget.Toast
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.FirebaseInstanceIdService
+import com.reclycer.repertoire.BuildConfig
 import com.reclycer.repertoire.data.DataManager
 import com.reclycer.repertoire.data.DatabaseManager
+import io.reactivex.Completable
 import io.reactivex.CompletableObserver
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 class MyRepertoireInstanceIDService: FirebaseInstanceIdService(){
+
+    var hasRefreshedOnce = false
 
     override fun onCreate() {
         super.onCreate()
         val refreshedToken = FirebaseInstanceId.getInstance().getToken()
         logTag("Token already available: $refreshedToken")
-        updateCurrentUserByAddingTokenAndSendItToServer(refreshedToken)
+        if(BuildConfig.DEBUG and !hasRefreshedOnce){
+//            Completable.fromAction {
+//                FirebaseInstanceId.getInstance().deleteInstanceId()
+//                logTag("Delete available Token: $refreshedToken")
+//            }.subscribeOn(Schedulers.io()).subscribe()
+            hasRefreshedOnce = true
+        }
+        else {
+            updateCurrentUserByAddingTokenAndSendItToServer(refreshedToken)
+        }
     }
 
     override fun onTokenRefresh() {

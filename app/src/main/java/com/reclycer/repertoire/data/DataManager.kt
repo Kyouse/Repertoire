@@ -47,7 +47,7 @@ class DataManager(val context: Context) {
                                 }
                             }
 
-                    Log.i("DataManager", "Success to list contact $it")
+                   // Log.i("DataManager", "Success to list contact $it")
 
                 }
     }

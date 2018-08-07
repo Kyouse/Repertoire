@@ -40,11 +40,10 @@ interface ContactService {
     @GET("messages2/")
     fun getMessages() : Single<List<ApiMessage>>
 
-    @POST("messages/")
+    @POST("messages2/")
     @FormUrlEncoded
     fun sendMessage(@Field("to_id") to_id: String,
                     @Field("from_id") from_id: String,
                     @Field("body") body : String): Single<ApiMessage>
-
 
 }
