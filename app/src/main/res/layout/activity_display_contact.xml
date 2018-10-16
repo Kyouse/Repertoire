@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/ic_male_default" />
+
+
+        <TextView
+            android:id="@+id/nom_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:autoSizeTextType="uniform"
+            android:lines="1"
+            android:layout_gravity="center_horizontal"
+            tools:text="Geoffrey LETON" />
+        <TextView
+            android:id="@+id/numero_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textAlignment="viewStart"
+            android:layout_gravity="center_horizontal"
+            android:textSize="16sp"
+            tools:text="0616497852" />
+
+        <LinearLayout
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <ImageButton
+                android:id="@+id/phoneButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="52dp"
+                android:scaleType="fitCenter"
+                android:background="?android:attr/selectableItemBackground"
+                android:tint="@color/colorPrimaryDark"
+                app:srcCompat="@drawable/ic_phone_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/smsButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="52dp"
+                android:scaleType="fitCenter"
+                android:background="?android:attr/selectableItemBackground"
+                android:tint="@color/colorPrimaryDark"
+                app:srcCompat="@drawable/ic_send_black_24dp" />
+
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+</ScrollView>
