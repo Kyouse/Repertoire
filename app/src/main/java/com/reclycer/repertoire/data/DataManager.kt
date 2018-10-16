@@ -151,7 +151,7 @@ class DataManager(val context: Context) {
 
     fun createMessage(message: Message): Completable {
 
-        return contactService.sendMessage(message.from_id!!, message.to_id!!, message.body!!)
+        return contactService.sendMessage(to_id = message.to_id!!, from_id = message.from_id!!, body = message.body!!)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .doOnSuccess {
 
@@ -170,7 +170,7 @@ private fun ContactService.ApiContact.toDBContact(): Contact {
 
 
 private fun ContactService.ApiMessage.toDBMessage(): Message {
-    val message = Message(to_id, from_id, body, date)
+    val message = Message(from_id = from_id, to_id = to_id, body =  body, date = date)
     message.sync_id = _id
     return message
 }

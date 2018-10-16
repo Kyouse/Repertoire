@@ -1,5 +1,8 @@
 package com.reclycer.repertoire.data.fcm
 
+import android.os.Handler
+import android.os.Looper
+import android.provider.ContactsContract
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -15,9 +18,11 @@ class MyRepertoireMessagingService: FirebaseMessagingService(){
 
             // Check if message contains a data payload.
             if (remoteMessage.getData().size > 0) {
+                val data = remoteMessage.data
                 Log.d("Token", "Message data payload: " + remoteMessage.getData());
-                Toast.makeText(this,"Message receive from :" ,Toast.LENGTH_SHORT).show()
 
+                val handler = Handler(Looper.getMainLooper())
+                handler.post { Toast.makeText(this,"Message receive from : $data" ,Toast.LENGTH_SHORT).show() }
 
             }
             // Check if message contains a notification payload.
