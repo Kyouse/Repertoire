@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.reclycer.repertoire.R
-import com.reclycer.repertoire.data.Contact
-import com.reclycer.repertoire.data.Message
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.message_cell.*
 import java.util.ArrayList
@@ -37,8 +35,6 @@ class ListMessageAdapter: RecyclerView.Adapter<ListMessageAdapter.MyViewHolder>(
         return MyViewHolder(view)
     }
 
-
-    data class MessageWrapper(val message: Message, val from: Contact?, val to:Contact?, val from_id_contact:String?)
 
     inner class MyViewHolder(override val containerView: View?) : RecyclerView.ViewHolder(containerView),
             LayoutContainer {
