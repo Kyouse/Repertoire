@@ -16,6 +16,7 @@ import java.io.File
 import java.util.ArrayList
 
 import com.reclycer.repertoire.data.Contact
+import com.reclycer.repertoire.ui.message.MessageListActivity
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.contact_cell.*
 
