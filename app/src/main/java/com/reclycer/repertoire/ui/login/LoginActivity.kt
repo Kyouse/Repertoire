@@ -1,5 +1,6 @@
 package com.reclycer.repertoire.ui.login
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -13,15 +14,15 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.common.api.ApiException
-import kotlinx.android.synthetic.main.activity_display_contact.*
 import kotlinx.android.synthetic.main.activity_login.*
-
 
 class LoginActivity : AppCompatActivity(){
 
     object Constants {
         const val REQUEST_CODE_GOOGLE_SIGNIN = 1
     }
+
+    private lateinit var loginViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,7 @@ class LoginActivity : AppCompatActivity(){
                 .centerCrop()
                 .into(background);
 
+        ViewModelProviders.of(this).get(LoginViewModel::class.java)
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build()
@@ -53,7 +55,7 @@ class LoginActivity : AppCompatActivity(){
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
+            loginViewModel.onAuthResult(task)
         }
     }
 
@@ -63,6 +65,7 @@ class LoginActivity : AppCompatActivity(){
 
             // Signed in successfully, show authenticated UI.
             updateUI(account)
+
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

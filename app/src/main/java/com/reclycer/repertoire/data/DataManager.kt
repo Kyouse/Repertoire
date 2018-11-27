@@ -3,6 +3,7 @@ package com.reclycer.repertoire.data
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.reclycer.repertoire.data.fcm.MyRepertoireInstanceIDService
 import com.reclycer.repertoire.data.fcm.MyRepertoireMessagingService
 import io.reactivex.Completable
@@ -157,6 +158,15 @@ class DataManager(val context: Context) {
 
                 }.toCompletable()
 
+    }
+
+    fun sendAccount(account: GoogleSignInAccount): Completable {
+
+        return contactService.sendAccount(account.serverAuthCode, account.idToken)
+                .subscribeOn(Schedulers.io()) // Executer sur le thread io
+                .doOnSuccess {
+
+                }.toCompletable()
     }
 }
 
