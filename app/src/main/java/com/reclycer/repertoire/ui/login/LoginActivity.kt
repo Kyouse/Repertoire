@@ -10,8 +10,10 @@ import com.google.android.gms.common.SignInButton
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.common.api.ApiException
+import kotlinx.android.synthetic.main.activity_display_contact.*
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -24,6 +26,11 @@ class LoginActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        Glide.with(this)
+                .load(R.drawable.backgroung)
+                .centerCrop()
+                .into(background);
 
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
