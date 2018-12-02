@@ -8,12 +8,16 @@ import android.support.v7.widget.LinearLayoutManager
 import com.reclycer.repertoire.R
 import com.reclycer.repertoire.RepertoireApp
 import kotlinx.android.synthetic.main.activity_list_message.*
+import android.widget.ScrollView
+import kotlinx.android.synthetic.main.abc_activity_chooser_view_list_item.*
+import kotlinx.android.synthetic.main.abc_activity_chooser_view_list_item.view.*
 
 
 class MessageListActivity : AppCompatActivity() {
 
     private val messageAdapter = ListMessageAdapter()
     private lateinit var messageListViewModel: MessageListViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,7 @@ class MessageListActivity : AppCompatActivity() {
 
         button_send!!.setOnClickListener { _ ->
             messageListViewModel.sendMessage(edit_message.text.toString())
+            edit_message.text.clear()
         }
     }
 
@@ -38,5 +43,6 @@ class MessageListActivity : AppCompatActivity() {
         messageAdapter.messageList.clear()
         messageAdapter.messageList.addAll(messageList)
         messageAdapter.notifyDataSetChanged()
+        message_list.scrollToPosition(messageAdapter.itemCount-1)
     }
 }

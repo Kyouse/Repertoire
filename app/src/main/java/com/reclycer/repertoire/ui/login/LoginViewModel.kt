@@ -28,9 +28,9 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
             val account = completedTask.getResult(ApiException::class.java)
 
             // Signed in successfully, show authenticated UI.
-//            updateUI(account)
+
             currentLoginStatus.value = LoginStatus.Running
-            dataManager.sendAccount(account)
+            dataManager.sendAccount(account!!)
                     .observeOn(AndroidSchedulers.mainThread()).subscribe({
 
                     },{
@@ -38,11 +38,8 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
                     })
 
         } catch (e: ApiException) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("LoginActivity", "signInResult:failed code=" + e.statusCode)
-//            updateUI(null)
-            currentLoginStatus.value = LoginStatus.Error
+    //        currentLoginStatus.value = LoginStatus.Error
         }
 
     }
@@ -50,12 +47,8 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
     sealed class LoginStatus{
         object Init: LoginStatus()
         object Running : LoginStatus()
-        sealed class Error{
-
-        }
-        class Success(displayName : String){
-
-        }
+        sealed class Error(){}
+        class Success(displayName : String)
     }
 
 }
