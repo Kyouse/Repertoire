@@ -46,10 +46,11 @@ interface ContactService {
                     @Field("from_id") from_id: String,
                     @Field("body") body : String): Single<ApiMessage>
 
+
+    data class ApiAuthorization(val access_token: String)
+
     @POST("authorize/")
     @FormUrlEncoded
-    fun sendAccount(@Field("serverAuthCode") serverAuthCode: String?,
-         @Field("idToken") idToken : String?):Single<ApiMessage>
-
-
+    fun sendAccount(@Field("serverAuthCode") serverAuthCode: String,
+                    @Field("idToken") idToken : String):Single<ApiAuthorization>
 }

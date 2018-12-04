@@ -162,7 +162,7 @@ class DataManager(val context: Context) {
 
     fun sendAccount(account: GoogleSignInAccount): Completable {
 
-        return contactService.sendAccount(account.serverAuthCode, account.idToken)
+        return contactService.sendAccount("bdkdjq", account.idToken!!)
                 .subscribeOn(Schedulers.io()) // Executer sur le thread io
                 .doOnSuccess {
 

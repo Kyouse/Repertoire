@@ -39,7 +39,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
 
         } catch (e: ApiException) {
             Log.w("LoginActivity", "signInResult:failed code=" + e.statusCode)
-    //        currentLoginStatus.value = LoginStatus.Error
+           currentLoginStatus.value = LoginStatus.Error
         }
 
     }
@@ -47,7 +47,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
     sealed class LoginStatus{
         object Init: LoginStatus()
         object Running : LoginStatus()
-        sealed class Error(){}
+        object Error : LoginStatus()
         class Success(displayName : String)
     }
 
